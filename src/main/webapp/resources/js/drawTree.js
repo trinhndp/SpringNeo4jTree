@@ -53,13 +53,14 @@ function convertToJson(res) {
                     if (n.properties.name == "Topic Evolution") nodes.push({
                         id: n.id,
                         label: n.properties.name,
-                        title: n.labels[0]
+                        title: n.labels[0],
+                        shape: 'circle'
                     });
-                    else nodes.push({id: n.id, label: n.properties.name,  group: n.labels[0]});     //topic
+                    else nodes.push({id: n.id, label: n.properties.name,  group: n.labels[0], shape: 'star'});     //topic
                 }
                 else if (n.properties.title)
-                    nodes.push({id: n.id, label: n.id, title: n.properties.title, group: n.labels[0]});     //paper
-                else   nodes.push({id: n.id, label: n.properties.value, group: n.labels[0]}) //timestamp
+                    nodes.push({id: n.id, label: n.id, title: n.properties.title, group: n.labels[0], shape: 'box'});     //paper
+                else   nodes.push({id: n.id, label: n.properties.value, group: n.labels[0], shape: 'ellipse'}) //timestamp
             }
         });
         row.graph.relationships.map(function (r) {
@@ -86,7 +87,8 @@ $.ajax({
     url: "http://localhost:7474/db/data/transaction/commit",
     data: JSON.stringify({
         statements: [{
-            statement: "MATCH p=()-[r:has]-() return p",
+            //statement: "MATCH p=()-[r:has]-() return p",
+            statement: "MATCH(n:Root) return n",
             resultDataContents: ["row", "graph"]
         }]
     }),
@@ -115,6 +117,12 @@ $.ajax({
 
         network.on("selectNode", function (params) {
             console.log('selectNode Event:', params);
+            $.ajaxSetup({
+                headers: {
+                    "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + "1234567")
+                }
+            });
+
             $.ajax({
                 type: "POST",
                 url: "http://localhost:7474/db/data/transaction/commit",
@@ -131,7 +139,7 @@ $.ajax({
                 },
                 success: function (res) {
                     var resJson2 = convertToJson(res);
-                    console.log(resJson2.edges);
+                    console.log(resJson2.nodes);
                     resJson2.nodes.forEach(function (node) {
                         if (hasId(node)===0) nodes.add(node);
                     })
