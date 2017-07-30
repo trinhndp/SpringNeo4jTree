@@ -1,3 +1,7 @@
+*, *:before, *:after {
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
 body{
     font-family: "SansSerif";
     margin-top: 0px;
@@ -15,9 +19,9 @@ body{
 
 /*declare size of area containing navbar*/
 .container{
-    min-height:500px ;
+    min-height:40px ;
     width:300px;
-    margin:120px auto;
+    margin:0px auto;
 }
 
 .container-fluid{
@@ -26,12 +30,13 @@ body{
 
 .navbar {
     background-color: #1f52d6;
-    min-height: 20px;
+    min-height: 24px;
     margin-bottom: 0;
     position:absolute; /* Tells Menu to ignore the size and position of container */
     width:100%; /* This tells the the Div to be 100% in Width */
     top:0; /* This sets the menu to the top increase number for distance */
     left:0; /* This sets where it should start from left to right */
+    z-index: 1;
 }
 
 .navbar-default .navbar-brand {
@@ -54,6 +59,10 @@ body{
         padding-bottom: 2.5px;
         line-height: 27px;
         color: white;
+    }
+
+    .navbar-default .navbar-brand{
+        padding-top: 0px !important;
     }
 }
 
@@ -82,6 +91,14 @@ body{
         /*padding-bottom: 2.5px;*/
         /*line-height: 27px;*/
         color: white;
+    }
+
+    .nav .dropdown-menu{
+        z-index: auto;
+    }
+
+    .navbar-default .navbar-brand{
+        padding-top: 4px;
     }
 }
 
