@@ -12,11 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="/resources/css/vis.min.css"/>
-    <%--<link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>--%>
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/resources/css/home.css"/> <!-- placed after bootstrap to override -->
     <!-- Required scripts -->
     <script src="/resources/js/jquery-3.2.1.min.js"></script>
-    <%--<script src="/resources/js/bootstrap.min.js"></script>--%>
+    <script src="/resources/js/bootstrap.min.js"></script>
     <script src="/resources/js/vis.min.js"></script>
     <%--<script src="/resources/js/drawTree.js"></script>--%>
 </head>
@@ -37,7 +37,9 @@
         <p>Corned beef spare ribs hamburger pork tenderloin flank pork loin beef ribs sausage brisket chicken venison bacon short loin sirloin. Ribeye tail short ribs andouille kevin chicken shankle meatloaf, corned beef rump sirloin t-bone chuck tongue. Swine venison tongue, sirloin turducken drumstick bresaola strip steak rump. Kevin ham hock meatball tri-tip. Ground round leberkas pig beef salami strip steak meatball beef ribs. Chicken ball tip rump, short loin bresaola pork t-bone jerky jowl pork chop tail chuck sausage prosciutto.</p>
     </div>
     <div class="rightColumn">
-        <h2>Right Column</h2>
+        <div class="title">
+            <p><span class="glyphicon glyphicon-info-sign"></span> Information</p>
+        </div>
 
         <p>Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus. Zonbi tattered for solum oculi eorum defunctis go lum cerebro. Nescio brains an Undead zombies. Sicut malus putrid voodoo horror. Nigh tofth eliv ingdead.</p>
     </div>
