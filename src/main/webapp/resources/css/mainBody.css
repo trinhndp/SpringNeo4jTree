@@ -76,12 +76,25 @@ body{
     border-bottom-left-radius: 5px;
 }
 
-.info-table{
-    margin-right: 3px;
-    margin-left: 3px;
-    padding-right: 3px;
+.container{
+    margin-right: 0px;
+    margin-left: 45px;
+    padding-right: 0px;
+    width: 80%;
 }
 
-.info-table h2{
+.info-table{
+    height: 184px;
+    border-bottom: 1px solid #1b6d85;
+}
+
+.detail-table .scroll{
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 337px;
+    width: 105%;
+}
+
+.info-table h2, .detail-table h2{
     text-align: center;
 }

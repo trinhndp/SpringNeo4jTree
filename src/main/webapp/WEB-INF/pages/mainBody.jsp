@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Bean
@@ -5,18 +6,12 @@
   Time: 3:35 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@page contentType="text/html;charset=UTF-8" language="java" %>
-<%@page isELIgnored="false" %>
-<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
-<html>
-<head>
-    <link rel="stylesheet" href="/resources/css/mainBody.css"/>   <!-- placed after bootstrap to override -->
-    <!-- Required scripts -->
-    <script src="/resources/js/vis.min.js"></script>
-    <script src="/resources/js/drawTree.js"></script>
-</head>
-<body>
+<%--<%@page contentType="text/html;charset=UTF-8" language="java" %>--%>
+<%--<%@page isELIgnored="false" %>--%>
+<%--<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>--%>
+<%--<%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>--%>
+<%--<%@ taglib prefix = "fn"--%>
+           <%--uri = "http://java.sun.com/jsp/jstl/functions" %>--%>
 <div class="mainContainer">
     <div class="leftColumn">
         <div class="title">
@@ -49,10 +44,20 @@
                     </table>
                 </div>
             </div>
+            <div class="container detail-table">
+                <div class="row scroll">
+                    <h2>Paper's Details</h2>
+                    <p id="id">${id}</p>
+                    <p id="titleFile">${titleFile}</p>
+                    <p id="intro">${intro}</p>
+                    <p id="contentFile">${contentFile}</p>
+                    <p id="url">${url}</p>
+                </div>
+            </div>
         </div>
 
     </div>
 </div>
 
-</body>
-</html>
+<%--</body>--%>
+<%--</html>--%>

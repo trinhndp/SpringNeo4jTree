@@ -12,8 +12,7 @@
 
     <context:component-scan base-package="vn.uit.aep" />
 
-    <bean
-            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/WEB-INF/pages/</value>
         </property>
