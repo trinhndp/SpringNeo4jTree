@@ -5,6 +5,7 @@
 var data = {};  //globally
 var nodes = new vis.DataSet({});
 var edges = new vis.DataSet({});
+
 // functions to convert Neo4j res to dataset format
 function idIndex(a, id) {
     for (var i = 0; i < a.length; i++) {
@@ -23,7 +24,7 @@ Array.prototype.hasElement = function(element) {
     return -1; //The element isn't in your array
 };
 
-//check object's id exist
+//check object's id exist in dataset
 var hasId = function(element) {
     // retrieve a filtered subset of the data
     var items;
@@ -54,12 +55,13 @@ function convertToJson(res) {
                         id: n.id,
                         label: n.properties.name,
                         title: n.labels[0],
-                        shape: 'circle'
+                        shape: 'circle',
+                        group: n.labels[0]
                     });
-                    else nodes.push({id: n.id, label: n.properties.name,  group: n.labels[0], shape: 'star'});     //topic
+                    else nodes.push({id: n.id, label: n.properties.name, shape: 'star', group: n.labels[0]});     //topic
                 }
                 else if (n.properties.title)
-                    nodes.push({id: n.id, label: n.id, title: n.properties.title, group: n.labels[0], shape: 'box'});     //paper
+                    nodes.push({id: n.id, label: n.id, title: n.properties.title, path: n.properties.pathFile, shape: 'box', group: n.labels[0]});     //paper
                 else   nodes.push({id: n.id, label: n.properties.value, group: n.labels[0], shape: 'ellipse'}) //timestamp
             }
         });
@@ -109,14 +111,19 @@ $.ajax({
         // initialize your network!
         var options = {
             interaction:{hover:true},
-            edges: {
-                //title: function(edge){ return edge.type;}
-            }
+            autoResize: true,
+            height: '95%',
+            width: '100%'
         };
         var network = new vis.Network(container, data, options);
 
         network.on("selectNode", function (params) {
-            console.log('selectNode Event:', params);
+            console.log('selectNode Event:',  nodes.get(params.nodes)[0]);
+            var item = nodes.get(params.nodes);
+            $("#key").html(item[0].group);
+            if(item[0].group === "Paper" ) $("#content").html(item[0].title);
+            else $("#content").html(item[0].label);
+
             $.ajaxSetup({
                 headers: {
                     "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + "1234567")
