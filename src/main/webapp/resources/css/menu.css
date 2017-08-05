@@ -1,15 +1,3 @@
-*, *:before, *:after {
-    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-}
-
-body{
-    font-family: "SansSerif";
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-}
-
 .mybar{
     margin-left: 0;
     margin-right: 0;
@@ -18,11 +6,11 @@ body{
 }
 
 /*declare size of area containing navbar*/
-.container{
-    min-height:40px ;
-    width:300px;
-    margin:0px auto;
-}
+/*.container{*/
+/*min-height:40px ;*/
+/*width:300px;*/
+/*margin:0px auto;*/
+/*}*/
 
 .container-fluid{
     padding-right: 0;
@@ -126,12 +114,3 @@ body{
     background-color: transparent;
 }
 
-/*#vis{*/
-    /*position: relative;*/
-    /*left: 1px;*/
-    /*border: 1px #bdbdbd solid;*/
-    /*border-top-right-radius: 6px;*/
-    /*border-top-left-radius: 6px;*/
-    /*width: 100%;*/
-    /*!*background-color: white;*!*/
-/*}*/

@@ -1,15 +1,3 @@
-*, *:before, *:after {
-    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-}
-
-body{
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.mainContainer{
-    position: relative;
-}
-
 .leftColumn, .rightColumn{
     /*border: 1px solid #ccc; !*check border *!*/
     padding: 0.2em;
@@ -40,7 +28,7 @@ body{
 @media screen and (min-width: 47.5em ) {
     .leftColumn {
         margin-right: 34.5em;
-        height: 571px;
+        height: 100%;
         margin-top: 0px !important;
     }
 
@@ -49,16 +37,17 @@ body{
         top: 0;
         right: 0;
         width: 34.25em;
-        height: 100%;
+        height: auto;
     }
 
     .leftboxContent{
-        min-height: 538px;
-        max-width: inherit;
+        height: -webkit-calc(100% - 30px);
     }
 
     .rightBoxContent{
-        min-height: 538px;
+        height: 86.5%;
+        position: fixed;
+        width: inherit;
     }
 }
 
@@ -76,19 +65,36 @@ body{
     border-bottom-left-radius: 5px;
 }
 
-.container{
-    margin-right: 0px;
-    margin-left: 45px;
-    padding-right: 0px;
-    width: 80%;
-}
+/*.container{*/
+/*margin-right: 0px;*/
+/*margin-left: 45px;*/
+/*padding-right: 0px;*/
+/*width: 80%;*/
+/*}*/
 
 .info-table{
     height: 184px;
+    width:100%;
     border-bottom: 1px solid #1b6d85;
 }
 
+.detail-table{
+    width: 100%;
+}
+
+.container{
+    margin-right: 0px;
+    /*width: 100%;*/
+}
+
 .detail-table .scroll{
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 337px;
+    width: 105%;
+}
+
+#vis .scroll{
     overflow-x: hidden;
     overflow-y: scroll;
     height: 337px;

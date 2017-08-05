@@ -40,7 +40,7 @@
                            aria-expanded="false">Tasks <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Display whole graph</a></li>
-                            <li><a href="#">Display topic over time</a></li>
+                            <li><a href="/myModal" data-toggle="modal" data-target="#myModal">Find papers by topic </a></li>
                             <li><a href="#">Something else here</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-header">Search</li>
@@ -56,3 +56,28 @@
     </nav>
 </div>
 
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Find papers by topic</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">Enter topic :</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-default">Get All</button>
+            </div>
+        </div>
+    </div>
+</div>

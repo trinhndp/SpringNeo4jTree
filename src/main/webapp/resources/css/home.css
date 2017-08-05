@@ -1,0 +1,36 @@
+*, *:before, *:after {
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
+body{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+@media screen and (min-width: 47.5em ) {
+    .mybar{
+        height: 30px !important;
+        width: 100%;
+    }
+
+    .mainContainer{
+        position: relative;
+        height: -webkit-calc(100% - 51px);
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 200px ) {
+    .mybar{
+        height: 38px;
+        width: 100%;
+    }
+}
+
+

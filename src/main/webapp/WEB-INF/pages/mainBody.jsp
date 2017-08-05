@@ -11,20 +11,20 @@
 <%--<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>--%>
 <%--<%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>--%>
 <%--<%@ taglib prefix = "fn"--%>
-           <%--uri = "http://java.sun.com/jsp/jstl/functions" %>--%>
+<%--uri = "http://java.sun.com/jsp/jstl/functions" %>--%>
 <div class="mainContainer">
     <div class="leftColumn">
         <div class="title">
             <p><span class="glyphicon glyphicon-picture"></span> Visualization</p>
         </div>
-        <div id="vis" class="rightBoxContent"></div>
+        <div id="vis" class="leftboxContent scroll"></div>
     </div>
     <div class="rightColumn">
         <div class="title">
             <p><span class="glyphicon glyphicon-info-sign"></span> Information</p>
         </div>
 
-        <div class="leftBoxContent" id="info">
+        <div class="rightBoxContent" id="info">
             <div class="container info-table">
                 <div class="row">
                     <h2>Node's Details</h2>
@@ -45,8 +45,8 @@
                 </div>
             </div>
             <div class="container detail-table">
+                <h2>Paper's Details</h2>
                 <div class="row scroll">
-                    <h2>Paper's Details</h2>
                     <p id="id">${id}</p>
                     <p id="titleFile">${titleFile}</p>
                     <p id="intro">${intro}</p>

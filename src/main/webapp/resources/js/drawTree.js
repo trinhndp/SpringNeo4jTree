@@ -65,7 +65,7 @@ function convertToJson(res) {
                         id: n.id,
                         label: n.id,
                         title: n.properties.title,
-                        path: n.properties.pathFile,
+                        path: n.properties.path,
                         shape: 'box',
                         group: n.labels[0]
                     });     //paper
@@ -83,10 +83,14 @@ function convertToJson(res) {
     return data;
 };
 
+function createTimeline()
+{
+
+}
 
 $.ajaxSetup({
     headers: {
-        "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + "1234567")
+        "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + "long9")
     }
 });
 
@@ -150,7 +154,7 @@ $.ajax({
 
             $.ajaxSetup({
                 headers: {
-                    "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + "1234567")
+                    "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + "long9")
                 }
             });
 
@@ -179,11 +183,15 @@ $.ajax({
                         if (hasId(edge) === 0) edges.add(edge);
                     })
                     network.stabilize;
+                    console.log(network.getViewPosition("vis-network"));
                 }
             });
         });
+
+        console.log(window.innerHeight);
     }
 });
+
 
 
 
