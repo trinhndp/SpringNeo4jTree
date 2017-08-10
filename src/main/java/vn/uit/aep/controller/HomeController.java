@@ -34,4 +34,11 @@ public class HomeController {
         System.out.println(model);
         return model;
     }
+
+    @RequestMapping(value = "/getPapers", method = RequestMethod.POST)
+    public String getContentFile(HttpServletResponse response, HttpServletRequest request,
+                                       @RequestParam("topic") String topicName) {
+        System.out.println(topicName);
+        return "home";
+    }
 }
