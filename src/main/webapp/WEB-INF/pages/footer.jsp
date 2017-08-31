@@ -6,4 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<div class="footer">Footer</div>
+<div class="footer">
+        <p> University of Information Technology </p>
+</div>

@@ -78,9 +78,9 @@ public class Paper {
             }
 
             setTitle(list.get(0));
-            setUrl(list.get(2));
-            setShortDes(list.get(3));
-            setContent(list.get(4));
+            setUrl(list.get(1));
+            setShortDes(list.get(2));
+            setContent(list.get(3));
             in.close();
         }
         catch(Exception e){

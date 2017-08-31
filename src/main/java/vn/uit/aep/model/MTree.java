@@ -24,7 +24,7 @@ public class MTree {
 
     }
 
-    public void createTree(LocalDate localDate, int sumDays){
+    public void createTree(LocalDate localDate, int sumDays, String pathFolder){
 
         try {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -32,16 +32,16 @@ public class MTree {
 
 
             Statement stmt = con.createStatement();
-            stmt.execute("CREATE (n:Root {name : \"Topic Evolution\"})");
+            stmt.execute("CREATE (n:Root {name : \"Root\"})");
 
 
             for (int d = 0; d < sumDays; d++) {
                 LocalDate nextDate = localDate.plusDays(d);
-                String path = "E:\\workspace\\ThesisCode\\Data_Crawler\\" + dtf.format(nextDate);  //sửa lại
+                String path = pathFolder + dtf.format(nextDate);  //sửa lại
 
                 String sql = "MATCH (r:Root)" +
-                        "WHERE r.name = \"Topic Evolution\"" +
-                        "CREATE (t:Timestamp {value : \"" + dtf2.format(nextDate) + "\"} )<-[:has]-(r)";
+                        "WHERE r.name = \"Root\"" +
+                        "CREATE (t:Timestamp {key : \"" + dtf.format(nextDate) + "\", value : \"" + dtf2.format(nextDate) + "\"} )<-[:has]-(r)";
 
                 stmt.execute(sql);
                 System.out.println(path);
@@ -88,15 +88,15 @@ public class MTree {
         }
     }
 
-    public void insertBranch(LocalDate localDate ) {
+    public void insertBranch(LocalDate localDate, String pathFolder ) {
         try {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd");
             DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String path = "D:\\Thesis\\Data\\Result\\" + dtf.format(localDate);  //sửa lại
+            String path = pathFolder + dtf.format(localDate);  //sửa lại
             Statement stmt = con.createStatement();
             String sql = "MATCH (r:Root)" +
-                    "WHERE r.name = \"Topic Evolution\"" +
-                    "CREATE (t:Timestamp {value : \"" + dtf2.format(localDate) + "\"} )<-[:has]-(r)";
+                    "WHERE r.name = \"Root\"" +
+                    "CREATE (t:Timestamp {key : \"" + dtf.format(localDate) + "\", value : \"" + dtf2.format(localDate) + "\"} )<-[:has]-(r)";
 
             stmt.execute(sql);
             System.out.println(path);
@@ -141,10 +141,10 @@ public class MTree {
 
     public static void main(String... args) {
         MTree mTree = new MTree();
-        int sumDays=16; //sua lai
-        LocalDate localDate = LocalDate.of(2017, 07, 22);  //sửa lại
-        mTree.createTree(localDate, sumDays);
-
-//        mTree.insertBranch(localDate);
+        int sumDays=20; //sua lai
+        LocalDate localDate = LocalDate.of(2017, 7, 22);  //sửa lại
+        String path = "E:\\workspace\\ThesisCode\\Data_Crawler\\";
+        mTree.createTree(localDate, sumDays, path);
+//        mTree.insertBranch(localDate, path);
     }
 }

@@ -17,7 +17,7 @@
 }
 
 .navbar {
-    background-color: #1f52d6;
+    background-color: #0B0B61;
     min-height: 24px;
     margin-bottom: 0;
     position:absolute; /* Tells Menu to ignore the size and position of container */
@@ -41,6 +41,7 @@
 }
 
 @media (min-width: 768px) {
+
     .navbar-default .navbar-nav > li > a {
         /* (30px - line-height of 27px) / 2 = 26.5px */
         padding-top: 2.5px;
@@ -52,6 +53,32 @@
     .navbar-default .navbar-brand{
         padding-top: 0px !important;
     }
+
+    .modal-content{
+        text-align: center;
+        width: 90%;
+    }
+
+    .modal-header {
+        padding: 5px;
+        border-bottom: 1px solid #08088A;
+        background-color: #08088A;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    .modal-title{
+        color: white;
+        font-size: 15px;
+    }
+
+    .modal-footer{
+        padding: 5px;
+    }
+
+    .response-modal{
+        height: 340px !important;
+    }
 }
 
 .navbar-default .navbar-brand:hover{
@@ -59,7 +86,7 @@
 }
 
 .dropdown-menu{
-    background-color: blue;
+    background-color: #0B0B61;
 }
 
 .dropdown-menu > li > a
@@ -73,6 +100,21 @@
 
 /*change color of collapse tab*/
 @media (min-width: 200px) {
+    .response-modal{
+        height: 555px;
+    }
+
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: white;
+    }
+
+    /*change color in droplist*/
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus, .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+        color: ghostwhite;
+        text-decoration: none;
+        background-color: forestgreen;
+    }
+
     .navbar-default .navbar-nav > li > a {
         /* (30px - line-height of 27px) / 2 = 26.5px */
         /*padding-top: 2.5px;*/
@@ -107,10 +149,12 @@
     background-color: white;
 }
 
-/*change color in droplist*/
-.dropdown-menu > li > a:focus, .dropdown-menu > li > a:hover {
-    color: #FFCCCC;
-    text-decoration: none;
-    background-color: transparent;
+
+
+#chart-div{
+    positive: relative;
 }
 
+.modal{
+    overflow: scroll;
+}

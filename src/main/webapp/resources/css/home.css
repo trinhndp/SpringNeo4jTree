@@ -11,17 +11,17 @@ body{
     height: 100%;
     width: 100%;
     position: relative;
+    font-size: 1.375em;
 }
 
-@media screen and (min-width: 47.5em ) {
+@media screen and (min-width: 768px ) {
     .mybar{
         height: 30px !important;
-        width: 100%;
     }
 
     .mainContainer{
         position: relative;
-        height: -webkit-calc(100% - 51px);
+        height: -webkit-calc(100% - 50px);
         width: 100%;
     }
 }

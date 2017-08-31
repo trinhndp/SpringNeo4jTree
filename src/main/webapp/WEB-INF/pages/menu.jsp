@@ -5,17 +5,6 @@
   Time: 12:56 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
-    <%--<title>Title</title>--%>
-    <%--<meta name="viewport" content="width=device-width, initial-scale=1">--%>
-    <%--<link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>--%>
-    <%--<link rel="stylesheet" href="/resources/css/menu.css"/>   <!-- placed after bootstrap to override -->--%>
-
-    <%--<!-- Required scripts -->--%>
-    <%--<script src="/resources/js/jquery-3.2.1.min.js"></script>--%>
-    <%--<script src="/resources/js/bootstrap.min.js"></script>--%>
-    <%--<script src="/resources/js/homeScript.js"></script>--%>
-
 <div class="container mybar">
     <!-- Static navbar -->
     <nav class="navbar navbar-default">
@@ -26,26 +15,20 @@
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">News Graph</a>
+                <a class="navbar-brand" href="/">News Graph</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse navbar-right">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="" data-toggle="modal" data-target="#infoCard">About</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Tasks <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Display whole graph</a></li>
-                            <li><a href="/myModal" data-toggle="modal" data-target="#myModal">Find papers by topic </a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">Search</li>
-                            <li><a href="#">Search paper by title</a></li>
-                            <li><a href="#">Search topic</a></li>
+                            <li><a href="#" onclick="drawGraph()">Visualize news graph</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#showKeyword">Get keywords of paper</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#top10Keyword">Get top-10 hot keywords of the paper</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -57,27 +40,89 @@
 </div>
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="top10Keyword" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Find papers by topic</h4>
+                <h4 class="modal-title">Find top-words of paper</h4>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">Enter topic :</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <label for="paper-id" class="form-control-label">Enter paper ID :</label>
+                        <input type="text" class="form-control" id="paper-id">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-default">Get All</button>
+                <button type="button" class="btn btn-default fa fa-times" data-dismiss="modal"> Close</button>
+                <button type="submit" class="btn btn-default btn-find fa fa-search"> Find</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div id="showKeyword" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Find top-words of paper</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="paperid" class="form-control-label">Enter paper ID :</label>
+                        <input type="text" class="form-control" id="paperid">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default fa fa-times" data-dismiss="modal"> Close</button>
+                <button type="submit" class="btn btn-default btn-show fa fa-eye"> Show</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- result Modal -->
+<div id="findTopWordModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content response-modal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">List of top words in paper</h4>
+            </div>
+            <div class="modal-body" >
+                <div id="chart-div" style="height: 25px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ABout Modal -->
+<div id="infoCard" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title fa fa-info-circle"> PROJECT INFORMATION</h4>
+            </div>
+            <div class="modal-body" >
+                        <h5> CLUSTERING AND VISUALIZING THE TEXT STREAM OF DOCUMENTS
+                            <br> USING TOPIC MODEL AND GRAPH DATABASE </h5>
+                        <p>Professor: Do Phuc</p>
+                        <p>Student 1: Nguyen Dinh Phuong Trinh</p>
+                        <p>Student 2: Nguyen Huynh Anh Tuan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

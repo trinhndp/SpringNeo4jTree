@@ -17,7 +17,9 @@
         <div class="title">
             <p><span class="glyphicon glyphicon-picture"></span> Visualization</p>
         </div>
-        <div id="vis" class="leftboxContent scroll"></div>
+        <div id="vis" class="leftboxContent scroll">
+            <h2>    Welcome to Vietnamese News Graph ! </h2>
+        </div>
     </div>
     <div class="rightColumn">
         <div class="title">
@@ -25,33 +27,35 @@
         </div>
 
         <div class="rightBoxContent" id="info">
-            <div class="container info-table">
-                <div class="row">
-                    <h2>Node's Details</h2>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Label</th>
-                            <th>Content</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td id="key"></td>
-                            <td id="content"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <%--<div class="container info-table">--%>
+                <%--<div class="row">--%>
+                    <%--<h2>Node's Details</h2>--%>
+                    <%--<table class="table">--%>
+                        <%--<thead>--%>
+                        <%--<tr>--%>
+                            <%--<th>Label</th>--%>
+                            <%--<th>Content</th>--%>
+                        <%--</tr>--%>
+                        <%--</thead>--%>
+                        <%--<tbody>--%>
+                        <%--<tr>--%>
+                            <%--<td id="key"></td>--%>
+                            <%--<td id="content"></td>--%>
+                        <%--</tr>--%>
+                        <%--</tbody>--%>
+                    <%--</table>--%>
+                <%--</div>--%>
+            <%--</div>--%>
             <div class="container detail-table">
-                <h2>Paper's Details</h2>
-                <div class="row scroll">
+                <h2 id="title-detailTable">Content Details</h2>
+                <div class="paper-content row scroll">
                     <p id="id">${id}</p>
                     <p id="titleFile">${titleFile}</p>
                     <p id="intro">${intro}</p>
                     <p id="contentFile">${contentFile}</p>
                     <p id="url">${url}</p>
+                </div>
+                <div class="topWord scroll">
                 </div>
             </div>
         </div>
