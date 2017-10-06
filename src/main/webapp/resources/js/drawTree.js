@@ -7,85 +7,6 @@ var passwd = "1234567";
 var nodes = new vis.DataSet({});
 var edges = new vis.DataSet({});
 
-// functions to convert Neo4j res to dataset format
-var idIndex = function (a, id) {
-    for (var i = 0; i < a.length; i++) {
-        if (a[i].id == id) return i;
-    }
-    return null;
-}
-//check object exist
-Array.prototype.hasElement = function (element) {
-    var i;
-    for (i = 0; i < this.length; i++) {
-        if (this[i]["from"] === element["from"] && this[i]["to"] === element["to"] && this[i]["type"] === element["type"]) {
-            return i; //Returns element position, so it exists
-        }
-    }
-    return -1; //The element isn't in your array
-};
-//check object's id exist in dataset
-var hasId = function (element) {
-    // retrieve a filtered subset of the data
-    var items;
-    if (element["id"] != undefined) {
-        items = nodes.get({
-            filter: function (item) {
-                return (item.id === element["id"]);
-            }
-        });
-    }
-    else {
-        items = edges.get({
-            filter: function (item) {
-                return (item.from === element["from"] && item.to === element["to"] && item.type === element["type"]);
-            }
-        });
-    }
-    return items.length;
-};
-
-var convertToJson = function(res) {
-    var nodes = [], links = [];
-    res.results[0].data.forEach(function (row) {
-        row.graph.nodes.forEach(function (n) {
-            if (idIndex(nodes, n.id) == null) {
-                if (n.properties.name) {
-                    if (n.properties.name == "Root") nodes.push({
-                        id: n.id,
-                        label: n.properties.name,
-                        title: n.labels[0],
-                        group: n.labels[0]
-                    });
-                    else nodes.push({id: n.id, label: n.properties.name, group: n.properties.name, name: n.labels[0]});     //topic
-                }
-                else if (n.properties.title)
-                    nodes.push({
-                        id: n.id,
-                        label: n.id,
-                        title: n.properties.title,
-                        path: n.properties.path,
-                        group: n.labels[0]
-                    });     //paper
-                else   nodes.push({id: n.id, label: n.properties.value, group: n.labels[0]}) //timestamp
-            }
-        });
-        row.graph.relationships.map(function (r) {
-            var s = {from: r.startNode, to: r.endNode, title: r.type};
-            if (links.hasElement(s) === -1) {
-                links.push(s);
-            }
-        });
-    });
-    var data = {nodes: nodes, edges: links};
-    return data;
-};
-
-var  updateProgressBar = function (key, probability, bar){
-    var element = "." + bar;
-    $(element).css('width', (probability*100).toFixed(2) + "%").text(key+" ("+ (probability*100).toFixed(2) + "%)");
-}
-
 function initalize(){
     $("#vis").empty();
     $.ajaxSetup({
@@ -211,6 +132,8 @@ var drawGraph = function(){
                 console.log(params.nodes);
                 console.log('selectNode Event:', nodes.get(params.nodes)[0]);
                 var item = nodes.get(params.nodes);
+                console.log('items');
+                console.log(item);
                 $("#key").html(item[0].group);
                 if (item[0].group === "Paper") {
                     $(".topWord").css("display", "none");

@@ -67,7 +67,7 @@
 @media (min-width: 200px) {
 
     .leftColumn{
-        margin-top: 10px;
+        margin-top: 0px;
     }
 
     .detail-table{
@@ -78,6 +78,8 @@
     .topWord, .paper-content{
         display: none;
     }
+
+
 }
 
 .rightBoxContent, .leftboxContent{
@@ -122,14 +124,16 @@
 #vis h2{
    margin-top: 0px;
     text-align: center;
+    min-height: 260px;
 }
 
 .info-table h2, .detail-table h2 {
     text-align: center;
+    color: #08088A;
 }
 
 .progress-bar {
     background-color: #898989;
-    color: white;
+    color: #08088A;
     padding-left: 10px;
 }

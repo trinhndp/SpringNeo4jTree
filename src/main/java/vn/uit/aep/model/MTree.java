@@ -1,12 +1,14 @@
 package vn.uit.aep.model;
 
+import org.apache.commons.collections.map.HashedMap;
+
 import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by trinhndp on 07-Aug-17.
@@ -14,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class MTree {
     private Connection con;
 
-    MTree(){
+    public MTree(){
         try {
             con = DriverManager.getConnection(
                     "jdbc:neo4j:bolt://localhost/?user=neo4j,password=1234567,scheme=basic");  //sửa lại
@@ -139,11 +141,44 @@ public class MTree {
         }
     }
 
+    public Map<String, List<String>> getListKeywordInTopic(String topic,int limit){
+        List<String> keyword = new ArrayList<>();
+        Map<String, List<String>> array = new HashedMap();
+        try{
+            Statement stmt = con.createStatement();
+            String getKeyword = "MATCH (topic:Topic)-[]-(keyword:KeyWord) where topic.name = \""+ topic +"\" return keyword limit " + limit;
+
+            ResultSet keywordList = stmt.executeQuery(getKeyword);
+            while (keywordList.next()) {
+                keyword.add(keywordList.getString("keyword"));
+            }
+
+            System.out.println(keyword.toString());
+
+            for(String word: keyword){
+                String getTimeline = "MATCH (time:Timestamp)-[]-(topic:Topic)-[]-(k:KeyWord) WHERE topic.name = \""+ topic +"\" AND k.value = \""+ word +"\" RETURN time AS timeline ORDER BY timeline asc";
+
+                ResultSet getTimelineList = stmt.executeQuery(getTimeline);
+                List<String> timelines = new ArrayList<String>();
+                while (getTimelineList.next()) {
+                    timelines.add(getTimelineList.getString("timeline"));
+                }
+                System.out.println(timelines.toString());
+                array.put(word, timelines);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return array;
+    }
+
     public static void main(String... args) {
         MTree mTree = new MTree();
-        int sumDays=20; //sua lai
-        LocalDate localDate = LocalDate.of(2017, 7, 22);  //sửa lại
-        String path = "E:\\workspace\\ThesisCode\\Data_Crawler\\";
+        int sumDays=1; //sua lai
+        LocalDate localDate = LocalDate.of(2017, 9, 22);  //sửa lại
+//        String path = "E:\\workspace\\ThesisCode\\Data_Crawler\\";
+        String path = "C:\\Users\\Bean\\Downloads\\de.vogella.rss-V5\\de.vogella.rss - V5\\Data\\";
         mTree.createTree(localDate, sumDays, path);
 //        mTree.insertBranch(localDate, path);
     }
