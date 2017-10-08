@@ -2,6 +2,11 @@
  * Created by Bean on 30-Jul-17.
  */
 $(document).ready(function () {
+    //helper
+    jQuery.validator.addMethod("noSpace", function(value, element) {
+        return value.indexOf(" ") < 0 && value != "";
+    }, "No space please, like sinh_viên");
+
     //before open modal
     $('#timelineWord').on('shown.bs.modal', function(){
         $("#timelineWordForm")[0].reset();
@@ -44,12 +49,8 @@ $(document).ready(function () {
             keyword: {
                 required: true,
                 digits: false,
+                noSpace: true,
                 minlength: 4
-            }
-            ,
-            topic: {
-                required: true,
-                digits: false
             }
         },
         messages: {
@@ -57,11 +58,7 @@ $(document).ready(function () {
                 required: "Please provide a specific keyword, not including space. Ex: cảnh_sát.",
                 minlength: "Your data must be at least 4 characters.",
                 digits: "It doesn not include integers."
-            },
-            topic: {
-                required: "Please enter a topic, such as GiaoDuc.",
-                digits: "It doesn not include integers."
-            },
+            }
         },
         submitHandler: function () {
             getTimelineOfWord();
@@ -69,30 +66,38 @@ $(document).ready(function () {
     });
     $("#timelineTopicForm").validate({
         rules: {
-            keyword: {
-                required: true,
-                digits: false,
-                minlength: 4
-            }
-            ,
             limit: {
                 required: true,
                 digits: true
             }
         },
         messages: {
-            keyword: {
-                required: "Please provide a specific keyword, not including space. Ex: cảnh_sát.",
-                minlength: "Your data must be at least 4 characters.",
-                digits: "It doesn not include integers."
-            },
-            topic: {
-                required: "Please enter a topic, such as GiaoDuc.",
+            limit: {
+                required: "Please enter the number of keyword.",
                 digits: "The positive number is required."
             },
         },
         submitHandler: function () {
             getTimelineOfTopic();
+        }
+    });
+    $("#statisticsOfKeywordForm").validate({
+        rules: {
+            word: {
+                required: true,
+                digits: false,
+                noSpace: true
+            }
+        },
+        messages: {
+            fPaperId: {
+                required: "Please enter a word without space",
+                digits: "Your word must not include integers."
+                // noSpace: "No space please, like sinh_viên"
+            }
+        },
+        submitHandler: function () {
+            getTotalPapers();
         }
     });
 
@@ -106,10 +111,58 @@ $(document).ready(function () {
         //e.preventDefault();
     });
     $('.btn-close').click(function (e) {
-        window.location.reload(true);
+        // window.location.reload(true);
         window.close();
     })
 });
+
+function getTotalPapers(){
+    $.ajaxSetup({
+        headers: {
+            "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + passwd)
+        }
+    });
+    //get top words from neo4j
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:7474/db/data/transaction/commit",
+        data: JSON.stringify({
+            statements: [{
+                statement:"MATCH (time:Timestamp) WITH time MATCH (time:Timestamp)-[]-(topic:Topic) WITH time, topic  MATCH (n:KeyWord)-[]-(p:Paper)-[]-(topic)-[]-(time) WHERE n.value = \'"+ $('#word').val() +"\' return time, topic, count(p) ORDER BY time asc",
+                resultDataContents: ["row", "graph"]
+            }]
+        }),
+        dataType: "json",
+        contentType: "application/json;charset=UTF-8",
+        error: function (err) {
+            console.log(err)
+        },
+        success: function (res) {
+            var data = [], groups =[];
+            if (res.results[0] == undefined) {
+                $("#vis").append('Data not found');
+            }
+            else if (res.results[0].data.length != 0) {
+                res.results[0].data.forEach(function (row) {
+                    var date = changeTo2dFormatTime(row.row[0].value);
+                    if(groups.indexOf(row.row[1].name) == -1) groups.push(row.row[1].name);
+                    data.push({x: date, y: row.row[2], group: row.row[1].name});
+                })
+                console.log(data);
+
+                if(data.length > 0){
+                    data = completeTimelineOfChart(data, groups);
+                    // console.log(data);
+                    draw2dChart(data, groups);
+                }
+
+                $("#vis").append('<h4 align="center"> The statistic reflects using the keyword "' + $("#word").val() + '"</h4>');
+            }
+            else $("#vis").append('Data not found');
+        }
+    })
+    $("#statisticsOfKeyword").modal("hide");
+}
 
 function getNKeywords() {
     $.ajaxSetup({
@@ -152,7 +205,7 @@ function getNKeywords() {
                     row.graph.relationships.map(function (r) {
                         probability = r.properties.weight;
                     });
-                    // sample.push({id: order, name: value, prob: (probability*100).toFixed(2)});
+
                     $('.topWordModal').append('<div class="progress"><div class="progress-bar progress-bar-striped topWord' + order + '" role="progressbar" aria-valuemin="0" aria-valuemax="100"> </div></div>');
                     updateProgressBar(value, probability, "topWord" + order);
                     order++;
@@ -161,7 +214,6 @@ function getNKeywords() {
             else $(".topWordModal").append('<p>Data not found.</p>');
         }
     })
-    // drawHBarChart('#chart-div', sample);
     $("#top10Keyword").modal("hide");
     $("#findTopWordModal").modal("show");
 
@@ -282,4 +334,11 @@ function getTimelineOfTopic() {
         }
     });
     $("#timelineTopic").modal("hide");
+}
+
+function changeTo2dFormatTime(value){
+    var date = value.split('/');
+    if(date[1][0] == '0') date[1] = date[1].substring(1,2);
+    if(date[0][0] == '0') date[0] = date[0].substring(1,2);
+    return date[2] + "-"+ date[1] + "-"+  date[0];
 }

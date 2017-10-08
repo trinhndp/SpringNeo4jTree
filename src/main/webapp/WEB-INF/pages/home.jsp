@@ -29,8 +29,7 @@
     <script src="/resources/js/helper.js"></script>
     <script src="/resources/js/drawTimeline.js"></script>
     <script src="/resources/js/drawTree.js"></script>
-    <script src="/resources/js/cloud.js"></script>
-    <script src="/resources/js/wordCloud.js"></script>
+    <script src="/resources/js/draw2dChart.js"></script>
     <%@ include file = "menu.jsp" %>
 </head>
 <body>

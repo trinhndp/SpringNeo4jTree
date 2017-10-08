@@ -11,9 +11,9 @@ var idIndex = function (a, id) {
 }
 
 //edit progress bar
-var  updateProgressBar = function (key, probability, bar){
+var updateProgressBar = function (key, probability, bar) {
     var element = "." + bar;
-    $(element).css('width', (probability*100).toFixed(2) + "%").text(key+"("+ (probability*100).toFixed(2) + "%)");
+    $(element).css('width', (probability * 100).toFixed(2) + "%").text(key + "(" + (probability * 100).toFixed(2) + "%)");
 }
 
 //check object exist
@@ -50,7 +50,7 @@ var hasId = function (element) {
 
 // functions to compare two array
 var isTheSame = function (arr1, arr2) {
-    if(arr1.length != arr2.length)
+    if (arr1.length != arr2.length)
         return false;
 
     for (var i = 0; i < arr1.length; i++) {
@@ -62,7 +62,7 @@ var isTheSame = function (arr1, arr2) {
 }
 
 //convert neo4j data res to json array
-var convertToJson = function(res) {
+var convertToJson = function (res) {
     var nodes = [], links = [];
     res.results[0].data.forEach(function (row) {
         row.graph.nodes.forEach(function (n) {
@@ -103,8 +103,8 @@ var convertToTimelineFormat = function (key, array) {
     var startDate = array[0], endDate = array[0], index = 0;
     var data = [];
     for (var i = 1; i < array.length; i++) {
-        var date1 = array[i-1].split('/');
-        var prevDate = new Date(date1[2], date1[1]-1, date1[0]);
+        var date1 = array[i - 1].split('/');
+        var prevDate = new Date(date1[2], date1[1] - 1, date1[0]);
 
         var date2 = array[i].split('/');
         var nowDate = new Date(date2[2], date2[1] - 1, date2[0]);
@@ -112,10 +112,20 @@ var convertToTimelineFormat = function (key, array) {
         if ((nowDate - prevDate) != (24 * 60 * 60 * 1000)) {
             var start = startDate.split('/');
             var end = endDate.split('/');
-            if(isTheSame(start,end))
-                data.push({group: 1, content: startDate, start: new Date(start[2], start[1]-1, start[0]), end: new Date(end[2], end[1]-1, end[0], 23, 59, 59, 59)});
+            if (isTheSame(start, end))
+                data.push({
+                    group: 1,
+                    content: startDate,
+                    start: new Date(start[2], start[1] - 1, start[0]),
+                    end: new Date(end[2], end[1] - 1, end[0], 23, 59, 59, 59)
+                });
             else
-            data.push({group: 1, content: "from " + startDate + " to " + endDate, start: new Date(start[2], start[1]-1, start[0]), end: new Date(end[2], end[1]-1, end[0])});
+                data.push({
+                    group: 1,
+                    content: "from " + startDate + " to " + endDate,
+                    start: new Date(start[2], start[1] - 1, start[0]),
+                    end: new Date(end[2], end[1] - 1, end[0])
+                });
             startDate = array[i];
             endDate = startDate;
         }
@@ -125,22 +135,32 @@ var convertToTimelineFormat = function (key, array) {
     }
     var start = startDate.split('/');
     var end = endDate.split('/');
-    if(isTheSame(start,end))
-        data.push({group: 1, content: startDate, start: new Date(start[2], start[1]-1, start[0]), end: new Date(end[2], end[1]-1, end[0], 23, 59, 59, 59)});
+    if (isTheSame(start, end))
+        data.push({
+            group: 1,
+            content: startDate,
+            start: new Date(start[2], start[1] - 1, start[0]),
+            end: new Date(end[2], end[1] - 1, end[0], 23, 59, 59, 59)
+        });
     else
-        data.push({group: 1, content: "from " + startDate + " to " + endDate, start: new Date(start[2], start[1]-1, start[0]), end: new Date(end[2], end[1]-1, end[0])});
+        data.push({
+            group: 1,
+            content: "from " + startDate + " to " + endDate,
+            start: new Date(start[2], start[1] - 1, start[0]),
+            end: new Date(end[2], end[1] - 1, end[0])
+        });
     console.log(data);
 
     return data;
 }
 
 //helper of groupTimelines
-var convertToTimelineFormatByGroup = function (key, array, group){
+var convertToTimelineFormatByGroup = function (key, array, group) {
     var startDate = array[0].time, endDate = array[0].time, index = 0;
     var data = [];
     for (var i = 1; i < array.length; i++) {
-        var date1 = array[i-1].time.split('/');
-        var prevDate = new Date(date1[2], date1[1]-1, date1[0]);
+        var date1 = array[i - 1].time.split('/');
+        var prevDate = new Date(date1[2], date1[1] - 1, date1[0]);
 
         var date2 = array[i].time.split('/');
         var nowDate = new Date(date2[2], date2[1] - 1, date2[0]);
@@ -148,10 +168,20 @@ var convertToTimelineFormatByGroup = function (key, array, group){
         if ((nowDate - prevDate) != (24 * 60 * 60 * 1000)) {
             var start = startDate.split('/');
             var end = endDate.split('/');
-            if(isTheSame(start,end))
-                data.push({group: group, content: startDate, start: new Date(start[2], start[1]-1, start[0]), end: new Date(end[2], end[1]-1, end[0], 23, 59, 59,59)});
+            if (isTheSame(start, end))
+                data.push({
+                    group: group,
+                    content: startDate,
+                    start: new Date(start[2], start[1] - 1, start[0]),
+                    end: new Date(end[2], end[1] - 1, end[0], 23, 59, 59, 59)
+                });
             else
-                data.push({group: group, content: "from " + startDate + " to " + endDate, start: new Date(start[2], start[1]-1, start[0]), end: new Date(end[2], end[1]-1, end[0])});
+                data.push({
+                    group: group,
+                    content: "from " + startDate + " to " + endDate,
+                    start: new Date(start[2], start[1] - 1, start[0]),
+                    end: new Date(end[2], end[1] - 1, end[0])
+                });
             startDate = array[i].time;
             endDate = startDate;
         }
@@ -161,29 +191,120 @@ var convertToTimelineFormatByGroup = function (key, array, group){
     }
     var start = startDate.split('/');
     var end = endDate.split('/');
-    if(isTheSame(start,end))
-        data.push({group: group, content: startDate, start: new Date(start[2], start[1]-1, start[0]), end: new Date(end[2], end[1]-1, end[0], 23, 59, 59, 59)});
+    if (isTheSame(start, end))
+        data.push({
+            group: group,
+            content: startDate,
+            start: new Date(start[2], start[1] - 1, start[0]),
+            end: new Date(end[2], end[1] - 1, end[0], 23, 59, 59, 59)
+        });
     else
-        data.push({group: group, content: "from " + startDate + " to " + endDate, start: new Date(start[2], start[1]-1, start[0]), end: new Date(end[2], end[1]-1, end[0])});
+        data.push({
+            group: group,
+            content: "from " + startDate + " to " + endDate,
+            start: new Date(start[2], start[1] - 1, start[0]),
+            end: new Date(end[2], end[1] - 1, end[0])
+        });
     return data;
 }
 
 //convert to Timeline (Vis.js) format by group
-var groupTimelines = function (array)
-{
+var groupTimelines = function (array) {
     var data = [];
-    for(var i=0; i < array.length; i++){
+    for (var i = 0; i < array.length; i++) {
         var obj = array[i];
-        data = data.concat(convertToTimelineFormatByGroup(obj.keyword, obj.timelines, i+1));
+        data = data.concat(convertToTimelineFormatByGroup(obj.keyword, obj.timelines, i + 1));
     }
     return data;
 }
 
 //get group name from an array
-var extractGroup = function(array){
+var extractGroup = function (array) {
     var groups = [];
-    for(var i=0; i < array.length; i++){
-        groups.push({id: (i+1), content: array[i].keyword});
+    for (var i = 0; i < array.length; i++) {
+        groups.push({id: (i + 1), content: array[i].keyword});
     }
     return groups;
+}
+
+//fill in empty timeline
+var completeTimelineOfChart = function (array, group) {
+    var newArr = [];
+    var startDate = array[0].x;
+    var endDate = array[array.length - 1].x;
+    var preDate;
+
+    var date = startDate.split('-');
+    // var end = endDate.split('-')
+    console.log("start " + startDate);
+
+    var someDate = new Date(date[0], date[1] - 1, date[2], 0, 0, 0, 0);
+    // someDate.setUTCDate(someDate.getDate() + 1); //number  of days to add, e.x. 15 days
+    console.log(someDate.toUTCString());
+    var i = 0;
+
+    while((new Date(endDate)).toLocaleDateString() != someDate.toLocaleDateString()){
+        //get date to compare
+        var entry = array[i];
+        var dateSplitted = entry.x.split('-');
+
+        if(preDate == entry.x)  entry = array[++i];
+        // if someDate not exist
+        if ((new Date(entry.x)).toLocaleDateString() != someDate.toLocaleDateString()) {
+            group.forEach(function (g) {
+                var dateSplitted = someDate.toLocaleDateString().split('/');
+                var day = dateSplitted[2] + "-" + dateSplitted[0] + "-" + dateSplitted[1];
+                newArr.push({x: day, y: 0, group: g});
+            });
+            someDate.setDate(someDate.getDate() + 1);
+        }
+        // if someDate exist, check whether timeline of any topic is missing
+        else
+            // if ((new Date(entry.x)).toLocaleDateString() == someDate.toLocaleDateString())
+        {
+            // newArr.push(entry);
+            var missingArr;
+            if(entry.x != preDate) missingArr = checkMissingTopic(array, someDate.toLocaleDateString(), group);
+            if (missingArr != undefined) newArr = newArr.concat(missingArr);
+            preDate = entry.x;
+            i++;
+            someDate.setDate(someDate.getDate() + 1);
+        }
+    }
+
+    console.log("end " + endDate);
+    var missingArr2 = checkMissingTopic(array, someDate.toLocaleDateString(), group);
+    if (missingArr2 != undefined) newArr = newArr.concat(missingArr2);
+    return newArr;
+}
+
+var getIndex = function (array, day) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].x == day) {
+            return i;
+        }
+    }
+}
+
+var checkMissingTopic = function (array, date, group) {
+    var newArr = [], availTopic = [];
+    var dateSplitted = date.split('/');
+    var day = dateSplitted[2] + "-" + dateSplitted[0] + "-" + dateSplitted[1];
+    var i = getIndex(array, day);
+    if (i != undefined) {
+        for (i; i < array.length; i++) {
+            if (array[i].x == day) {
+                availTopic.push(array[i].group);
+                newArr.push(array[i]);
+            }
+            else break;
+        }
+    }
+
+    var diff = $(group).not(availTopic).get();
+    for (var j = 0; j < diff.length ; j++) {
+            newArr.push({x: day, y: 0, group: diff[j]});
+    }
+
+    return newArr;
 }

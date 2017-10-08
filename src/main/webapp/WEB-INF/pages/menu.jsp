@@ -33,7 +33,7 @@
                                 paper</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#timelineTopic">Show lifetime of a chosen
                                 topic</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#timelineTopic">Statistics of total papers
+                            <li><a href="#" data-toggle="modal" data-target="#statisticsOfKeyword">Statistics of total papers
                                 using a keyword</a></li>
                             <li><a href="#" onclick="drawGraph()">Visualize news graph</a></li>
                         </ul>
@@ -79,30 +79,30 @@
 </div>
 
 <!-- Modal -->
-<%--<div id="showKeyword" class="modal fade" role="dialog">--%>
-    <%--<div class="modal-dialog" style="width: 45%">--%>
-        <%--<!-- Modal content-->--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header">--%>
-                <%--<h4 class="modal-title">Find top-words of paper</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body modalEdit">--%>
-                <%--<form id="showKeywordForm">--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label for="paperid" class="form-control-label">Enter paper's ID :</label>--%>
-                        <%--<input type="text" class="form-control" id="paperid" name="paperid">--%>
-                    <%--</div>--%>
-                    <%--<div class="modal-footer">--%>
-                        <%--<button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">--%>
-                            <%--Close--%>
-                        <%--</button>--%>
-                        <%--<button type="submit" class="btn btn-default btn-show fa fa-eye"> Show</button>--%>
-                    <%--</div>--%>
-                <%--</form>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
+<div id="statisticsOfKeyword" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 45%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Investigation how many papers using this keyword</h4>
+            </div>
+            <div class="modal-body modalEdit">
+                <form id="statisticsOfKeywordForm">
+                    <div class="form-group">
+                        <label for="word" class="form-control-label">Enter a keyword :</label>
+                        <input type="text" class="form-control" id="word" name="word">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-default btn-display fa fa-eye"> Display</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div id="timelineWord" class="modal fade" role="dialog">
