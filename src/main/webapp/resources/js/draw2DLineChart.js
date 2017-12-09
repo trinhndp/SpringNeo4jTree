@@ -2,12 +2,9 @@
  * Created by trinhndp on 07-Oct-17.
  */
 //style of point
-    var style = ["circle", "square"];
+    var style = ["square", "circle"];
 
-
-
-var draw2dChart = function(data, group){
-    $("#vis").empty();
+var draw2DLineChart = function(data, group){
     var container = document.getElementById('vis');
     var items = data;
 
@@ -22,18 +19,28 @@ var draw2dChart = function(data, group){
             id: n,
             content: n,
             options: {
-                drawPoints: style[Math.floor((Math.random() * 2) + 1)]
-            }});
+                drawPoints: style[Math.floor(Math.random() * 2)]
+            },
+            shaped: {
+                orientation: 'bottom'
+            }
+        });
     });
 
     var dataset = new vis.DataSet(items);
     var options = {
         drawPoints: false,
-        dataAxis: {visible: true},
+        dataAxis: {
+            visible: true,
+            left: {
+                title: {text: "Term frequency in topic (%)"}
+            }
+        },
         legend: true,
         start:  new Date(2017, 5, 1),
         end: new Date(2017, 12, 31)
     };
-    // var graph2d = new vis.Graph2d(container, dataset, options);
+
+
     var graph2d = new vis.Graph2d(container, dataset, groups, options);
 }

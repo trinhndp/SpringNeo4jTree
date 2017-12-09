@@ -51,13 +51,15 @@
                     <br/>
                     1. Show the lifetime of a specific keyword. <br/>
                 <br/>
-                2. Show an arbitrary number of top keywords on a paper. <br/>
+                2. Show an arbitrary number of top keywords in a paper. <br/>
                     <br/>
-                3. Show the lifetime of top keywords used the most on a topic. <br/>
+                3. Show the lifetime of top keywords used the most in a topic. <br/>
                     <br/>
                 4. Show the statistics of using a specific keyword. <br/>
                     <br/>
-                5. Minor function: visualizing the structure of storage tree.<br/>
+                5. Show the statistics of a keyword frequency through topics. <br/>
+                    <br/>
+                6. Minor function: visualizing the structure of storage tree.<br/>
                 </h4>
                 <div class="paper-content row scroll">
                     <p id="id">${id}</p>

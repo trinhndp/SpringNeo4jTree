@@ -1,0 +1,41 @@
+.VNExpress-ThoiSu{
+    stroke: red;
+    fill: red;
+    stroke-width: 1px;
+    fill-opacity: 1;
+}
+
+.VNExpress-TheGioi{
+    stroke: #8A0868;
+    fill: #8A0868;
+    stroke-width: 1px;
+    fill-opacity: 1;
+}
+
+.VNExpress-KhoaHoc{
+    stroke: blue;
+    fill: blue;
+    stroke-width: 1px;
+    fill-opacity: 1;
+}
+
+.VNExpress-GiaoDuc{
+    stroke: #00FF00;
+    fill: #00FF00;
+    stroke-width: 1px;
+    fill-opacity: 1;
+}
+
+.VNExpress-CongNghe{
+    stroke: purple;
+    fill: purple;
+    stroke-width: 1px;
+    fill-opacity: 1;
+}
+
+.VNExpress-PhapLuat{
+    stroke: brown;
+    fill: brown;
+    stroke-width: 1px;
+    fill-opacity: 1;
+}

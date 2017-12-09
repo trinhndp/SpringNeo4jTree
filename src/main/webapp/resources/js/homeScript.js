@@ -5,7 +5,14 @@ $(document).ready(function () {
     //helper
     jQuery.validator.addMethod("noSpace", function(value, element) {
         return value.indexOf(" ") < 0 && value != "";
-    }, "No space please, like sinh_viên");
+    }, "No space please, like sinh_viên.");
+
+    // jQuery.validator.addMethod("noDigits", function(text) {
+    //     var letters = /^[A-Za-z]+$/;
+    //     if(text.value.match(letters))
+    //         return true;
+    //     else return false;
+    // }, "Your word must not contains digits please.");
 
     //before open modal
     $('#timelineWord').on('shown.bs.modal', function(){
@@ -13,6 +20,12 @@ $(document).ready(function () {
     })
     $('#timelineTopic').on('shown.bs.modal', function(){
         $("#timelineTopicForm")[0].reset();
+    })
+    $('#statisticsOfKeyword').on('shown.bs.modal', function(){
+        $("#statisticsOfKeywordForm")[0].reset();
+    })
+    $('#barChart').on('shown.bs.modal', function(){
+        $("#barChartForm")[0].reset();
     })
 
     //validate form
@@ -48,7 +61,7 @@ $(document).ready(function () {
         rules: {
             keyword: {
                 required: true,
-                digits: false,
+                // noDigits: true,
                 noSpace: true,
                 minlength: 4
             }
@@ -57,7 +70,6 @@ $(document).ready(function () {
             keyword: {
                 required: "Please provide a specific keyword, not including space. Ex: cảnh_sát.",
                 minlength: "Your data must be at least 4 characters.",
-                digits: "It doesn not include integers."
             }
         },
         submitHandler: function () {
@@ -85,19 +97,34 @@ $(document).ready(function () {
         rules: {
             word: {
                 required: true,
-                digits: false,
                 noSpace: true
             }
         },
         messages: {
-            fPaperId: {
+            word: {
                 required: "Please enter a word without space",
-                digits: "Your word must not include integers."
-                // noSpace: "No space please, like sinh_viên"
             }
         },
         submitHandler: function () {
             getTotalPapers();
+        }
+    });
+    $("#barChartForm").validate({
+        rules: {
+            bWord: {
+                required: true,
+                // noDigits: true,
+                noSpace: true
+            }
+        },
+        messages: {
+            bWord: {
+                required: "Please enter a word without space",
+                // noDigits: "Your word must not include integers.",
+            }
+        },
+        submitHandler: function () {
+            getContinousFrequency();
         }
     });
 
@@ -112,7 +139,8 @@ $(document).ready(function () {
     });
     $('.btn-close').click(function (e) {
         // window.location.reload(true);
-        window.close();
+        // window.close();
+        $(this).modal("hide");
     })
 });
 
@@ -139,29 +167,85 @@ function getTotalPapers(){
         },
         success: function (res) {
             var data = [], groups =[];
+            $("#vis").empty();
             if (res.results[0] == undefined) {
                 $("#vis").append('Data not found');
             }
             else if (res.results[0].data.length != 0) {
+                var max = 0;
                 res.results[0].data.forEach(function (row) {
                     var date = changeTo2dFormatTime(row.row[0].value);
                     if(groups.indexOf(row.row[1].name) == -1) groups.push(row.row[1].name);
+                    if(max < row.row[2]) max = row.row[2];
                     data.push({x: date, y: row.row[2], group: row.row[1].name});
                 })
                 console.log(data);
 
                 if(data.length > 0){
-                    data = completeTimelineOfChart(data, groups);
+                    // data = completeTimelineOfChart(data, groups);
                     // console.log(data);
-                    draw2dChart(data, groups);
+                    // draw2DLineChart(data, groups);
+                    draw2DbarChart(data, groups, max + 5);
                 }
 
-                $("#vis").append('<h4 align="center"> The statistic reflects using the keyword "' + $("#word").val() + '"</h4>');
+                $("#vis").append('<h4 align="center"> The statistic reflects total papers using the keyword "' + $("#word").val() + '"</h4>');
             }
             else $("#vis").append('Data not found');
         }
     })
     $("#statisticsOfKeyword").modal("hide");
+}
+
+function getContinousFrequency(){
+    $.ajaxSetup({
+        headers: {
+            "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + passwd)
+        }
+    });
+    //get top words from neo4j
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:7474/db/data/transaction/commit",
+        data: JSON.stringify({
+            statements: [{
+                statement:"MATCH (time:Timestamp) WITH time MATCH (time:Timestamp)-[]-(topic:Topic) WITH time, topic  MATCH (n:KeyWord)-[r:presents]-(topic)-[]-(time) WHERE n.value = \'"+ $('#bWord').val() +"\' return time, topic, r.weight ORDER BY time asc",
+                resultDataContents: ["row", "graph"]
+            }]
+        }),
+        dataType: "json",
+        contentType: "application/json;charset=UTF-8",
+        error: function (err) {
+            console.log(err)
+        },
+        success: function (res) {
+            var data = [], groups =[];
+            var max = 0;
+            $("#vis").empty();
+            if (res.results[0] == undefined) {
+                $("#vis").append('Data not found');
+            }
+            else if (res.results[0].data.length != 0) {
+                res.results[0].data.forEach(function (row) {
+                    if(max < row.row[2]) max = row.row[2];
+                    var date = changeTo2dFormatTime(row.row[0].value);
+                    if(groups.indexOf(row.row[1].name) == -1) groups.push(row.row[1].name);
+                    data.push({x: date, y: (row.row[2]*100).toFixed(2), group: row.row[1].name});
+                })
+                console.log(data);
+                console.log(Math.round((max*100)+1));
+
+                if(data.length > 0){
+                    data = completeTimelineOfChart(data, groups);
+                    console.log(data);
+                    // draw2DbarChart(data, groups, Math.round(Math.round((max*100)+5)));
+                    draw2DLineChart(data, groups);
+                }
+                $("#vis").append('<h4 align="center"> The statistic reflects term frequency using the keyword "' + $("#bWord").val() + '"</h4>');
+            }
+            else $("#vis").append('Data not found');
+        }
+    })
+    $("#barChart").modal("hide");
 }
 
 function getNKeywords() {
@@ -206,8 +290,8 @@ function getNKeywords() {
                         probability = r.properties.weight;
                     });
 
-                    $('.topWordModal').append('<div class="progress"><div class="progress-bar progress-bar-striped topWord' + order + '" role="progressbar" aria-valuemin="0" aria-valuemax="100"> </div></div>');
-                    updateProgressBar(value, probability, "topWord" + order);
+                    $('.topWordModal').append('<div class="progress"><div class="progress-bar progress-bar-striped topwordModal' + order + '" role="progressbar" aria-valuemin="0" aria-valuemax="100"> </div></div>');
+                    updateProgressBar(value, probability, "topwordModal" + order);
                     order++;
                 })
             }
@@ -245,6 +329,7 @@ function getTimelineOfWord() {
         },
         success: function (res) {
             var value = [];
+            $("#vis").empty();
             if (res.results[0] == undefined) {
                 console.log("data not found");
             }
@@ -294,6 +379,7 @@ function getTimelineOfTopic() {
         success: function (res) {
             var data = [];
             var timeArray = [], word, prevWord, time;
+            $("#vis").empty();
             if (res.results[0] == undefined) {
                 console.log("data not found");
             }
@@ -336,9 +422,3 @@ function getTimelineOfTopic() {
     $("#timelineTopic").modal("hide");
 }
 
-function changeTo2dFormatTime(value){
-    var date = value.split('/');
-    if(date[1][0] == '0') date[1] = date[1].substring(1,2);
-    if(date[0][0] == '0') date[0] = date[0].substring(1,2);
-    return date[2] + "-"+ date[1] + "-"+  date[0];
-}

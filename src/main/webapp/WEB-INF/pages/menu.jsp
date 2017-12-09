@@ -33,8 +33,9 @@
                                 paper</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#timelineTopic">Show lifetime of a chosen
                                 topic</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#statisticsOfKeyword">Statistics of total papers
-                                using a keyword</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#statisticsOfKeyword">Statistics of total
+                                papers using a keyword</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#barChart">Statistics of keyword frequency through topics</a></li>
                             <li><a href="#" onclick="drawGraph()">Visualize news graph</a></li>
                         </ul>
                     </li>
@@ -84,13 +85,39 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Investigation how many papers using this keyword</h4>
+                <h4 class="modal-title">Investigate how many papers using this keyword</h4>
             </div>
             <div class="modal-body modalEdit">
                 <form id="statisticsOfKeywordForm">
                     <div class="form-group">
                         <label for="word" class="form-control-label">Enter a keyword :</label>
                         <input type="text" class="form-control" id="word" name="word">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-default btn-display fa fa-eye"> Display</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="barChart" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 45%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Investigate the usage of a keyword</h4>
+            </div>
+            <div class="modal-body modalEdit">
+                <form id="barChartForm">
+                    <div class="form-group">
+                        <label for="bWord" class="form-control-label">Enter a keyword :</label>
+                        <input type="text" class="form-control" id="bWord" name="bWord">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">
@@ -117,8 +144,9 @@
                     <div class="form-group">
                         <label for="keyword" class="form-control-label">Which keyword you want to see? </label>
                         <input type="text" class="form-control" id="keyword" name="keyword">
-                        <label for="topicDropdown" class="form-control-label">Which exact topic you want to see? </label>
-                        <select id="topicDropdown" style="width: 100%;" >
+                        <label for="topicDropdown" class="form-control-label">Which exact topic you want to
+                            see? </label>
+                        <select id="topicDropdown" style="width: 100%;">
                             <option>VNExpress-GiaoDuc</option>
                             <option>VNExpress-ThoiSu</option>
                             <option>VNExpress-KhoaHoc</option>
@@ -149,8 +177,9 @@
             <div class="modal-body modalEdit">
                 <form id="timelineTopicForm" role="form">
                     <div class="form-group">
-                        <label for="chosenTopicDropdown" class="form-control-label">Choose a topic you wanna see: </label>
-                        <select id="chosenTopicDropdown" style="width: 100%;" >
+                        <label for="chosenTopicDropdown" class="form-control-label">Choose a topic you wanna
+                            see: </label>
+                        <select id="chosenTopicDropdown" style="width: 100%;">
                             <option>VNExpress-GiaoDuc</option>
                             <option>VNExpress-ThoiSu</option>
                             <option>VNExpress-KhoaHoc</option>
@@ -180,7 +209,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">List of N top words in paper</h4>
+                <h4 class="modal-title">The list of top keywords in paper</h4>
             </div>
             <div class="modal-body topWordModal">
             </div>

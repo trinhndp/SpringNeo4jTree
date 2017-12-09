@@ -157,7 +157,7 @@ var drawGraph = function(){
                     });
                 }
                 else if (item[0].name === "Topic") {
-                    $("#title-detailTable").html("Top-Words List");
+                    $("#title-detailTable").html("Top 10 hot keywords used in \"" + item[0].label + "\"");
                     //hide content table
                     $(".topWord").css("display", "block");
                     $(".paper-content").css("display", "none");
@@ -205,7 +205,7 @@ var drawGraph = function(){
                     console.log("root or time");
                     $(".topWord").css("display", "none");
                     $(".paper-content").css("display", "none");
-                    $("#title-detailTable").html("Content Details");
+                    $("#title-detailTable").html("Content Details \br This node has no details.");
                 }
 
                 $.ajaxSetup({

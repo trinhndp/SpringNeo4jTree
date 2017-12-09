@@ -13,7 +13,10 @@ var idIndex = function (a, id) {
 //edit progress bar
 var updateProgressBar = function (key, probability, bar) {
     var element = "." + bar;
-    $(element).css('width', (probability * 100).toFixed(2) + "%").text(key + "(" + (probability * 100).toFixed(2) + "%)");
+    var length = (probability * 100).toFixed(2);
+    if (length > 100)
+        $(element).css('width', + 100 + "%").text(key + "(" + length + "%)");
+    else $(element).css('width',  + length + "%").text(key + "(" + length + "%)");
 }
 
 //check object exist
@@ -286,6 +289,7 @@ var getIndex = function (array, day) {
     }
 }
 
+//fullfill the missing topic in a day of timeline array
 var checkMissingTopic = function (array, date, group) {
     var newArr = [], availTopic = [];
     var dateSplitted = date.split('/');
@@ -308,3 +312,24 @@ var checkMissingTopic = function (array, date, group) {
 
     return newArr;
 }
+
+//change appropriate dateformat
+function changeTo2dFormatTime(value){
+    var date = value.split('/');
+    if(date[1][0] == '0') date[1] = date[1].substring(1,2);
+    if(date[0][0] == '0') date[0] = date[0].substring(1,2);
+    return date[2] + "-"+ date[1] + "-"+  date[0];
+}
+
+//manually customize css style of bar columns
+// var customizeCssBar = function(groups){
+//     var color = ["blue", "red", "brown", "orange", "purple"];
+//     var i = 0;
+//     groups.forEach(function(n){
+//         var temp = "."+n+"";
+//         $(temp).css("fill", color[i]);
+//         $(temp).css("stroke", color[i]);
+//         $(temp).css("stroke-width", "1px");
+//         i++;
+//     });
+// }
