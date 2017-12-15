@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/resources/css/font-awesome.min.css">
     <!-- Required scripts -->
     <script src="/resources/js/framework/jquery-3.2.1.min.js"></script>
+    <script src="/resources/js/framework/d3.v3.min.js"></script>
     <script src="/resources/js/framework/bootstrap.min.js"></script>
     <script src="/resources/js/framework/vis.min.js"></script>
     <script src="/resources/js/validation/jquery.validation.js"></script>
@@ -32,6 +33,7 @@
     <script src="/resources/js/drawTree.js"></script>
     <script src="/resources/js/draw2DLineChart.js"></script>
     <script src="/resources/js/draw2DBarChart.js"></script>
+    <script src="/resources/js/drawClustering.js"></script>
     <%@ include file = "menu.jsp" %>
 </head>
 <body>

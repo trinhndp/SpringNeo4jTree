@@ -2,7 +2,7 @@
  * Created by Bean on 13-Sep-17.
  */
 
-// functions to convert Neo4j res to dataset format
+// functions to get index of id in neo4j arr
 var idIndex = function (a, id) {
     for (var i = 0; i < a.length; i++) {
         if (a[i].id == id) return i;
@@ -319,6 +319,53 @@ function changeTo2dFormatTime(value){
     if(date[1][0] == '0') date[1] = date[1].substring(1,2);
     if(date[0][0] == '0') date[0] = date[0].substring(1,2);
     return date[2] + "-"+ date[1] + "-"+  date[0];
+}
+
+//change to Neo4j dateformat to compare two days
+function changeToNeo4jFormatTime(value){
+    var year = value.getFullYear();
+    var month = value.getMonth() + 1;
+    var day = value.getDate();
+
+    if(parseInt(month) < 10) month = "0" + month;
+    if(parseInt(day) < 10) day = "0" + day;
+    return year + "-" + month + "-" + day;
+}
+
+//check keyword exists in array
+function existKeyword(array, keyword){
+    for(var i = 0; i< array.length; i++){
+        if(array[i] == keyword)
+            return i;
+    }
+    return -1;
+}
+
+//convert to vector of k-medoids
+function convert2VectorKMedoids(vectorTong, vectorPaper, id){
+    var vector = [];
+    // console.log(vectorPaper);
+    vectorTong.forEach(function (n) {
+        if (existKeyword(vectorPaper, n) > -1) {
+            vector.push(1);
+        }
+        else vector.push(0);
+    })
+    vector.push("P_" + id);
+    // console.log(vector);
+    return vector;
+}
+
+function convertToD3DataFormat(json) {
+    var data = [];
+    var par = JSON.parse(json);
+    for(var i = 1; i < 7 ; i++)
+    {
+        for(var j = 0; j < par[i].length; j++){
+            data.push({"name": par[i][j].substring(2, par[i][j].length), "group": i});
+        }
+    }
+    return data;
 }
 
 //manually customize css style of bar columns

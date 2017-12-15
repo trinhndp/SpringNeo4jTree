@@ -67,14 +67,13 @@
                     <p id="intro">${intro}</p>
                     <p id="contentFile">${contentFile}</p>
                     <p id="url">${url}</p>
+                    <p type="hidden" id="jsonRes"> ${json}</p>
                 </div>
                 <div class="topWord scroll">
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-
 <%--</body>--%>
 <%--</html>--%>

@@ -36,6 +36,7 @@
                             <li><a href="#" data-toggle="modal" data-target="#statisticsOfKeyword">Statistics of total
                                 papers using a keyword</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#barChart">Statistics of keyword frequency through topics</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#clustering">Cluster articles to see the distribution of topics</a></li>
                             <li><a href="#" onclick="drawGraph()">Visualize news graph</a></li>
                         </ul>
                     </li>
@@ -63,9 +64,19 @@
                                data-fv-notempty-message="The paper's id is required">
                     </div>
                     <div class="form-group">
-                        <label for="fLimit" class="form-control-label">Enter number of words :</label>
-                        <input type="text" class="form-control" id="fLimit" name="fLimit" required
-                               data-fv-notempty-message="The number is required">
+                        <label>Enter number of words :</label>
+                        <select id = "fLimit">
+                            <option value = "1">1</option>
+                            <option value = "2">2</option>
+                            <option value = "3">3</option>
+                            <option value = "4">4</option>
+                            <option value = "5">5</option>
+                            <option value = "6">6</option>
+                            <option value = "7">7</option>
+                            <option value = "8">8</option>
+                            <option value = "9">9</option>
+                            <option value = "10">10</option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">
@@ -97,7 +108,7 @@
                         <button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">
                             Close
                         </button>
-                        <button type="submit" class="btn btn-default btn-display fa fa-eye"> Display</button>
+                        <button type="submit" class="btn btn-default btn-display fa fa-eye"> Show </button>
                     </div>
                 </form>
             </div>
@@ -123,7 +134,7 @@
                         <button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">
                             Close
                         </button>
-                        <button type="submit" class="btn btn-default btn-display fa fa-eye"> Display</button>
+                        <button type="submit" class="btn btn-default btn-display fa fa-eye"> Show </button>
                     </div>
                 </form>
             </div>
@@ -186,8 +197,19 @@
                             <option>VNExpress-PhapLuat</option>
                             <option>VNExpress-TheGioi</option>
                         </select>
-                        <label for="limit" class="form-control-label">How many keywords you wanna see: </label>
-                        <input type="text" class="form-control" id="limit" name="limit">
+                        <label>How many keywords you wanna see: </label>
+                        <select id = "keywordLimit">
+                            <option value = "1">1</option>
+                            <option value = "2">2</option>
+                            <option value = "3">3</option>
+                            <option value = "4">4</option>
+                            <option value = "5">5</option>
+                            <option value = "6">6</option>
+                            <option value = "7">7</option>
+                            <option value = "8">8</option>
+                            <option value = "9">9</option>
+                            <option value = "10">10</option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">
@@ -217,6 +239,60 @@
     </div>
 </div>
 
+<!-- clustering result Modal -->
+<div id="clusterModal" class="modal fade" role="dialog" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog" style="width:550px; height:400px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Distribution of papers</h4>
+            </div>
+            <div class="modal-body" id="clusteringModal">
+                <svg id="svgClustering" viewBox="0 0 550 400" preserveAspectRatio="xMinYMin meet"></svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="clustering" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 45%">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Clustering articles into 6 groups of topics </h4>
+            </div>
+            <div class="modal-body modalEdit">
+                <form id="clusteringForm">
+                    <div class="form-group">
+                        <div class = "left col-md-5">
+                        <label>From the day: </label>
+                        <select id = "startDay">
+                            <option value = "day1"> 28/09/2017 </option>
+                        </select>
+                        </div>
+                        <div class = "left col-md-7">
+                        <label>Select number of days to cluster: </label>
+                        <select id = "endDay">
+                            <option value = "1"> 1 </option>
+                            <option value = "2"> 2 </option>
+                            <option value = "3"> 3 </option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-default btn-cluster fa fa-eye"> Show </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ABout Modal -->
 <div id="infoCard" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -238,4 +314,3 @@
 </div>
 </div>
 </div>
-

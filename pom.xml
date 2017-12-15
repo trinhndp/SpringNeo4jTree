@@ -40,6 +40,39 @@
             <artifactId>neo4j-jdbc-driver</artifactId>
             <version>3.1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+
+        <!--K-Medoids-->
+        <dependency>
+            <groupId>net.sf.javaml</groupId>
+            <artifactId>java-ml</artifactId>
+            <version>0.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>libsvm</groupId>
+            <artifactId>libsvm</artifactId>
+            <version>1</version>
+        </dependency>
+        <dependency>
+            <groupId>be.abeel</groupId>
+            <artifactId>ajt</artifactId>
+            <version>2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons.math</groupId>
+            <artifactId>commons-math</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>weka</groupId>
+            <artifactId>weka</artifactId>
+            <version>1</version>
+        </dependency>
     </dependencies>
 
     <build>
