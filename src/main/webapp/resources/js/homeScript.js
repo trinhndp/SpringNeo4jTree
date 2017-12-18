@@ -574,8 +574,7 @@ function findTopKeywordsOfCluster(data) {
     getKeywordsOfEachPaper(group5, getData);
     getKeywordsOfEachPaper(group6, getData);
 
-    // console.log(JSON.stringify(listOfKeywords));
-    computeTermFrequency(listOfKeywords);
+    return (computeTermFrequency(listOfKeywords));
 }
 
 var listOfKeywords = [];
@@ -701,25 +700,44 @@ function convertTo10Score(top10key){
     return top10;
 }
 
+var checkTermExists = function (a, term) {
+    // var keys = Object.keys(a);
+    for(var i = 0; i<a.length; i++) {
+        if (a[i].term == term) return i;
+    }
+    return null;
+}
+
 function getTop20KeywordsForCluster(top10){
-    
+    // var top10 = [{"cảnh_sát": 3, "thu_giữ": 2, "hiện_trường": 1, "gà_nhà": 3},{"hợp_pháp": 2, "cảnh_sát": 2, "hậu_trường": 1}, {"sinh_viên": 1, "cảnh_sát": 1, "hậu_trường": 3}];
+    var accumulationList = [];
+    for(var i = 0; i<top10.length; i++){
+        var row = top10[i];
+        var keys = Object.keys(row);
+        for(var j = 0; j<keys.length; j++) {
+            var index = checkTermExists(accumulationList, keys[j]);
+            if (index == null)
+                accumulationList.push({term: keys[j], frequency: row[keys[j]]});
+            else
+                accumulationList[index].frequency = (row[keys[j]] + accumulationList[index].frequency);
+        }
+    }
+    accumulationList.sort(function(a, b){return b.frequency - a.frequency});
+    var top20Split = accumulationList.slice(0, 20);
+    console.log(top20Split);
+    return top20Split;
 }
 
 function computeTermFrequency(dataJSON) {
-    console.log(dataJSON);
-    var group1 = [], group2 = [], group3 = [], group4 = [], group5 = [], group6 = [];
-    var list1 = [], list2 = [], list3 = [], list4 = [], list5 = [], list6 = [];
     var j = 0;
     var temp = [];
+    var result = [];
     for (var i = 0; i < dataJSON.length; i++) {
         console.log("cluser " + i);
         temp[0] = dataJSON[i];
         var docs = getDocs(temp);
         var top10 = computeTFIDFeveryTerm(docs);
-        var result = getTop20KeywordsForCluster(top10);
-        console.log(top10);
+        result.push(getTop20KeywordsForCluster(top10));
     }
-
-
-
+    return result;
 }
