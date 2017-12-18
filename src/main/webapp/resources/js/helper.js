@@ -359,14 +359,20 @@ function convert2VectorKMedoids(vectorTong, vectorPaper, id){
 function convertToD3LinkDataFormat(json) {
     var data = [];
     var par = JSON.parse(json);
-    console.log("D3 convert");
-    console.log(par);
+    // console.log("D3 convert");
+    // console.log(par);
     for(var i = 1; i < 7 ; i++)
     {
-        for(var j = 0; j < (par[i].length-1); j++){
-            for(var k = j+1; k < par[i].length; k++)
-            {
-                data.push({"source": par[i][j].substring(2, par[i][j].length), "target": par[i][k].substring(2, par[i][j].length), "value": i});
+        if(par[i].length == 1) data.push({"source": par[i][0].substring(2, par[i][0].length), "target": par[i][0].substring(2, par[i][0].length), "value": (i-1)});
+        else {
+            for (var j = 0; j < (par[i].length - 1); j++) {
+                for (var k = j + 1; k < par[i].length; k++) {
+                    data.push({
+                        "source": par[i][j].substring(2, par[i][j].length),
+                        "target": par[i][k].substring(2, par[i][j].length),
+                        "value": (i - 1)
+                    });
+                }
             }
         }
     }

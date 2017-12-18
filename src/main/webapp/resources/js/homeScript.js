@@ -435,7 +435,7 @@ function getClusteringGroup() {
     var start = $("#startDay").find('option:selected').text();
     var number = parseInt($("#endDay").find('option:selected').text());
     var date = start.trim().split('/');
-    console.log(date);
+    // console.log(date);
 
     var someDate = new Date(date[2], date[1] - 1, date[0], 0, 0, 0, 0);
     // console.log("day " + someDate);
@@ -532,7 +532,6 @@ function getClusteringGroup() {
                     // $("#clusterModal").modal("show");
                     $("#vis").empty();
                     clustering(data);
-                    dataJson = findTopKeywordsOfCluster(data);
                 },
                 error: function (errMsg) {
                     alert("error !!!");
@@ -546,26 +545,27 @@ function getClusteringGroup() {
 
 function findTopKeywordsOfCluster(data) {
     //data =     [{"name": "18956", "rating": "0.1969418493", "group": "3"}];
+    console.log(data);
     var keywordList = {};
     var groups = [];
-    var group1=[], group2=[], group3=[], group4=[], group5=[], group6=[];
-    var list1=[], list2=[], list3=[], list4=[], list5=[], list6=[];
-    for(var i = 0; i < data.length; i++){
+    var group1 = [], group2 = [], group3 = [], group4 = [], group5 = [], group6 = [];
+    var list1 = [], list2 = [], list3 = [], list4 = [], list5 = [], list6 = [];
+    for (var i = 0; i < data.length; i++) {
         var row = data[i];
-        if(row.group == "1")
+        if (row.group == "0")
             group1.push(row.name);
-        else if(row.group == "2")
+        else if (row.group == "1")
             group2.push(row.name);
-        else if(row.group == "3")
+        else if (row.group == "2")
             group3.push(row.name);
-        else if(row.group == "4")
+        else if (row.group == "3")
             group4.push(row.name);
-        else if(row.group == "5")
+        else if (row.group == "4")
             group5.push(row.name);
-        else if(row.group == "6")
+        else if (row.group == "5")
             group6.push(row.name);
     }
-    groups.push(group1,group2,group3, group4, group5, group6);
+    groups.push(group1, group2, group3, group4, group5, group6);
 
     getKeywordsOfEachPaper(group1, getData);
     getKeywordsOfEachPaper(group2, getData);
@@ -575,12 +575,12 @@ function findTopKeywordsOfCluster(data) {
     getKeywordsOfEachPaper(group6, getData);
 
     // console.log(JSON.stringify(listOfKeywords));
-    computeIDF(listOfKeywords);
+    computeTermFrequency(listOfKeywords);
 }
 
 var listOfKeywords = [];
-function getData(data){
-    listOfKeywords.push(JSON.stringify(data));
+function getData(data) {
+    listOfKeywords.push(data);
 }
 
 var getKeywordsOfEachPaper = function (listOfId, getData) {
@@ -616,7 +616,7 @@ var getKeywordsOfEachPaper = function (listOfId, getData) {
             }
             else if (res.results[0].data.length != 0) {
                 res.results[0].data.forEach(function (row) {
-                    if(id != row.row[0] && id != 0) {
+                    if (id != row.row[0] && id != 0) {
                         var temp = []
                         var obj = {};
                         // console.log(id + " has " + keywords.length + " words");
@@ -630,7 +630,7 @@ var getKeywordsOfEachPaper = function (listOfId, getData) {
                     var word = {};
                     word[keyw] = row.row[2];
                     keywords.push(word);
-                   // console.log(row);
+                    // console.log(row);
                 })
             }
             var lastObj = {};
@@ -644,20 +644,90 @@ var getKeywordsOfEachPaper = function (listOfId, getData) {
     })
 }
 
-function computeIDF(dataJSON){
-    $.ajax({
-        // traditional: true,
-        type: "POST",
-        url: "/getTopKeywords",
-        data: {arr: JSON.stringify(dataJSON)},
-        // data: {arr: JSON.stringify("{dự}")},
-        contentType:"application/x-www-form-urlencoded; charset=UTF-16",
-        dataType: "json",
-        success: function (data) {
-            alert(data);
-        },
-        error: function (errMsg) {
-            alert("error !!!" +  errMsg);
+var getDocs = function (dataJSON) {
+    var docs = [];
+    for (var i = 0; i < dataJSON.length; i++) {
+        console.log("cluster");
+        var cluster = dataJSON[i];
+        for (var j = 0; j < cluster.length; j++) {
+            var paper = cluster[j][0];
+            docs.push(paper[Object.keys(paper)[0]]);
         }
-    });
+    }
+    // console.log("all docs");
+    // console.log(docs);
+    return docs;
+}
+
+function computeIDF(docs, term) {
+    var count = 0;
+    for (var i = 0; i < docs.length; i++) {
+        var paper = docs[i];
+        for (var j = 0; j < paper.length; j++) {
+            if (term == Object.keys(paper[j]))
+                count++;
+        }
+    }
+    if (Math.log(docs.length / count) == Infinity) return 0;
+    else return Math.log(docs.length / count);
+}
+
+function computeTFIDFeveryTerm(docs) {
+    var top10Paper = [];
+    for (var i = 0; i < docs.length; i++) {
+        var termFrequency = [];
+        var paper = docs[i];
+        console.log(paper);
+        for (var j = 0; j < paper.length; j++) {
+            var term = Object.keys(paper[j]).toString();
+
+            var idf = computeIDF(docs, term);
+            var tfIdf = parseFloat(paper[j][term]) * idf;
+            termFrequency.push({term: term, frequency: tfIdf});
+        };
+        termFrequency.sort(function(a, b){return b.frequency - a.frequency});
+        var top10Split = termFrequency.slice(0, 10);
+        top10Paper.push(convertTo10Score(top10Split));
+    }
+    console.log(top10Paper);
+    return top10Paper;
+}
+
+function convertTo10Score(top10key){
+    var top10 = {};
+    for(var i = 0; i < 10; i++){
+     top10[top10key[i].term] = (10-i);
+    }
+    return top10;
+}
+
+function computeTermFrequency(dataJSON) {
+    for (var i = 0; i< dataJSON.length; i++)
+    {
+        var cluster = [];
+        for (var j = 0; j< dataJSON.length; i++)
+        {
+            if(dataJSON[j].group == i)
+                cluster.push(dataJSON[j]);
+
+        }
+        var docs = getDocs(cluster);
+        var top10 = computeTFIDFeveryTerm(docs);
+    }
+
+    // $.ajax({
+    //     // traditional: true,
+    //     type: "POST",
+    //     url: "/getTopKeywords",
+    //     data: {arr: JSON.stringify(dataJSON)},
+    //     // data: {arr: JSON.stringify("{dự}")},
+    //     contentType:"application/x-www-form-urlencoded; charset=UTF-16",
+    //     dataType: "json",
+    //     success: function (data) {
+    //         alert(data);
+    //     },
+    //     error: function (errMsg) {
+    //         alert("error !!!" +  errMsg);
+    //     }
+    // });
 }

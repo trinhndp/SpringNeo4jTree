@@ -3,19 +3,12 @@
  */
 
 
-    // var svg = d3.select("#svgClustering");
-// var svg = d3.select("#vis").append("svg")
-//         .attr("width", width)
-    // .attr("height", height);
-
 var duplicate = function (arr, term) {
         for (var i = 0; i < arr.length; i++) {
             if (arr[i].name == term) return i;
         }
         return -1;
     }
-
-
 
 var clustering = function (data) {
 
@@ -28,7 +21,7 @@ var clustering = function (data) {
         return index;
     }
 
-    console.log(data);
+    // console.log(data);
     // var links = [
     //     {"source": 135249, "target": 135247, "value": 1}];
     var width = 950,
@@ -42,12 +35,15 @@ var clustering = function (data) {
         link.target = nodeByName(link.target, link.value);
     });
 
+    computeTermFrequency(nodes);
+
     var graph = {nodes: nodes, edges: links};
 
     // Extract the nodes and links from the data.
     var nodes = graph.nodes,
         links = graph.links;
 
+    // var svg = d3.select("#svgClustering");
     var svg = d3.select("#vis").append("svg")
         .attr("width", width)
         .attr("height", height);
@@ -79,6 +75,7 @@ var clustering = function (data) {
         .attr('fill', function (d) {
             return color[d.group];
         })
+        .on("dblclick", dblclick)
         .call(force.drag);
 
     var text = svg.append("svg:g").selectAll("g")
@@ -100,6 +97,14 @@ var clustering = function (data) {
         .text(function (d) {
             return d.name;
         });
+
+    function dblclick(d) {
+        alert("selected "+d.group);
+    }
+
+    function dragstart(d) {
+        d3.select(this).classed("fixed", d.fixed = true);
+    }
 
     force.on('tick', function () {
         edges.attr({

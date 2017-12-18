@@ -120,16 +120,7 @@ public class HomeController {
         String json = "";
         System.out.println("getTopKeywords");
         System.out.println(URLDecoder.decode(arrays, StandardCharsets.UTF_8.toString()));
-//
-//        for(int i=0; i<arrays.length; i++){
-////            String arr = arrays[i];
-////            System.out.println(arr);
-////            String [] splitArr = arr.split("#");
-////            System.out.println("spliited array");
-////            for (String str: splitArr) {
-////            }
-//            System.out.println(arrays[i]);
-//        }
+
         model.addObject("json", json);
         System.out.println(model);
         return model;
