@@ -13,6 +13,9 @@ import vn.uit.aep.model.Paper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -49,7 +52,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/clustering", method = RequestMethod.POST)
-    public ModelAndView clustering( @RequestParam(value = "arr") String arr) {
+    public ModelAndView clustering( @RequestParam(value = "clusteringArr") String arr) {
         ModelAndView model = new ModelAndView("home");
         System.out.println("Recieved");
 
@@ -112,7 +115,23 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/getTopKeywords", method = RequestMethod.POST)
-    public void getTopKeywords(@RequestParam(value = "arr") String arr){
-        System.out.println(arr);
+    public ModelAndView getTopKeywords(@RequestParam(value = "arr") String arrays) throws UnsupportedEncodingException {
+        ModelAndView model = new ModelAndView("home");
+        String json = "";
+        System.out.println("getTopKeywords");
+        System.out.println(URLDecoder.decode(arrays, StandardCharsets.UTF_8.toString()));
+//
+//        for(int i=0; i<arrays.length; i++){
+////            String arr = arrays[i];
+////            System.out.println(arr);
+////            String [] splitArr = arr.split("#");
+////            System.out.println("spliited array");
+////            for (String str: splitArr) {
+////            }
+//            System.out.println(arrays[i]);
+//        }
+        model.addObject("json", json);
+        System.out.println(model);
+        return model;
     }
 }

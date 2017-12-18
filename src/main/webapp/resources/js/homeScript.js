@@ -517,18 +517,18 @@ function getClusteringGroup() {
                 })
                 vectorPapers.push(convert2VectorKMedoids(vectorTong, vector, idPaper));
             }
-
-            console.log(vectorPapers);
+            // console.log("vectorPapers");
+            // console.log(vectorPapers);
             $.ajax({
                 // traditional: true,
                 type: "POST",
                 url: "/clustering",
-                data: {arr: JSON.stringify(vectorPapers)},
+                data: {clusteringArr: JSON.stringify(vectorPapers)},
                 // contentType: "application/json; charset=utf-8",
                 dataType: "text",
                 success: function (data) {
                     var json = $(data).find('#jsonRes').text();
-                    var data = convertToD3DataFormat(json);
+                    var data = convertToD3LinkDataFormat(json);
                     // $("#clusterModal").modal("show");
                     $("#vis").empty();
                     clustering(data);
@@ -546,8 +546,10 @@ function getClusteringGroup() {
 
 function findTopKeywordsOfCluster(data) {
     //data =     [{"name": "18956", "rating": "0.1969418493", "group": "3"}];
-    var keywordList = [];
+    var keywordList = {};
+    var groups = [];
     var group1=[], group2=[], group3=[], group4=[], group5=[], group6=[];
+    var list1=[], list2=[], list3=[], list4=[], list5=[], list6=[];
     for(var i = 0; i < data.length; i++){
         var row = data[i];
         if(row.group == "1")
@@ -563,35 +565,25 @@ function findTopKeywordsOfCluster(data) {
         else if(row.group == "6")
             group6.push(row.name);
     }
+    groups.push(group1,group2,group3, group4, group5, group6);
 
-    var list1 = getKeywordsOfEachPaper(group1);
-    var list2 = getKeywordsOfEachPaper(group2);
-    var list3 = getKeywordsOfEachPaper(group3);
-    var list4 = getKeywordsOfEachPaper(group4);
-    var list5 = getKeywordsOfEachPaper(group5);
-    var list6 = getKeywordsOfEachPaper(group6);
+    getKeywordsOfEachPaper(group1, getData);
+    getKeywordsOfEachPaper(group2, getData);
+    getKeywordsOfEachPaper(group3, getData);
+    getKeywordsOfEachPaper(group4, getData);
+    getKeywordsOfEachPaper(group5, getData);
+    getKeywordsOfEachPaper(group6, getData);
 
-    keywordList.push({"1": list1, "2": list2, "3": list3, "4": list4, "5": list5, "6": list6});
-    console.log("list keywords");
-    console.log(keywordList);
-
-    // $.ajax({
-    //     // traditional: true,
-    //     type: "POST",
-    //     url: "/getTopKeywords",
-    //     data: {arr: JSON.stringify(keywordList)},
-    //     // contentType: "application/json; charset=utf-8",
-    //     dataType: "text",
-    //     success: function (data) {
-    //        alert(data);
-    //     },
-    //     error: function (errMsg) {
-    //         alert("error !!!" +  errMsg);
-    //     }
-    // });
+    // console.log(JSON.stringify(listOfKeywords));
+    computeIDF(listOfKeywords);
 }
 
-function getKeywordsOfEachPaper(listOfId) {
+var listOfKeywords = [];
+function getData(data){
+    listOfKeywords.push(JSON.stringify(data));
+}
+
+var getKeywordsOfEachPaper = function (listOfId, getData) {
     var keywordList = [];
     $.ajaxSetup({
         headers: {
@@ -609,23 +601,28 @@ function getKeywordsOfEachPaper(listOfId) {
             }]
         }),
         dataType: "json",
+        async: false,
         contentType: "application/json;charset=UTF-8",
         error: function (err) {
             console.log(err)
         },
         success: function (res) {
+            var s;
             var keywords = [];
             var id = 0;
             if (res.results[0] == undefined) {
                 console.log("data not found");
+                return null;
             }
             else if (res.results[0].data.length != 0) {
                 res.results[0].data.forEach(function (row) {
                     if(id != row.row[0] && id != 0) {
+                        var temp = []
                         var obj = {};
                         // console.log(id + " has " + keywords.length + " words");
                         obj[id] = keywords;
-                        keywordList.push(obj);
+                        temp.push(obj);
+                        keywordList.push(temp);
                         keywords = [];
                     }
                     id = row.row[0];
@@ -637,9 +634,30 @@ function getKeywordsOfEachPaper(listOfId) {
                 })
             }
             var lastObj = {};
+            var temp = [];
             lastObj[id] = keywords;
-            keywordList.push(lastObj);
+            temp.push(lastObj);
+            keywordList.push(temp);
+            // console.log(JSON.stringify(keywordList));
+            getData(keywordList);
         }
     })
-    return keywordList;
+}
+
+function computeIDF(dataJSON){
+    $.ajax({
+        // traditional: true,
+        type: "POST",
+        url: "/getTopKeywords",
+        data: {arr: JSON.stringify(dataJSON)},
+        // data: {arr: JSON.stringify("{dự}")},
+        contentType:"application/x-www-form-urlencoded; charset=UTF-16",
+        dataType: "json",
+        success: function (data) {
+            alert(data);
+        },
+        error: function (errMsg) {
+            alert("error !!!" +  errMsg);
+        }
+    });
 }

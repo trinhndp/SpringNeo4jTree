@@ -356,15 +356,21 @@ function convert2VectorKMedoids(vectorTong, vectorPaper, id){
     return vector;
 }
 
-function convertToD3DataFormat(json) {
+function convertToD3LinkDataFormat(json) {
     var data = [];
     var par = JSON.parse(json);
+    console.log("D3 convert");
+    console.log(par);
     for(var i = 1; i < 7 ; i++)
     {
-        for(var j = 0; j < par[i].length; j++){
-            data.push({"name": par[i][j].substring(2, par[i][j].length), "group": i});
+        for(var j = 0; j < (par[i].length-1); j++){
+            for(var k = j+1; k < par[i].length; k++)
+            {
+                data.push({"source": par[i][j].substring(2, par[i][j].length), "target": par[i][k].substring(2, par[i][j].length), "value": i});
+            }
         }
     }
+    // console.log(data);
     return data;
 }
 
