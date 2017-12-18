@@ -35,7 +35,7 @@ var clustering = function (data) {
         link.target = nodeByName(link.target, link.value);
     });
 
-    computeTermFrequency(nodes);
+    findTopKeywordsOfCluster(nodes);
 
     var graph = {nodes: nodes, edges: links};
 

@@ -677,7 +677,7 @@ function computeTFIDFeveryTerm(docs) {
     for (var i = 0; i < docs.length; i++) {
         var termFrequency = [];
         var paper = docs[i];
-        console.log(paper);
+        // console.log(paper);
         for (var j = 0; j < paper.length; j++) {
             var term = Object.keys(paper[j]).toString();
 
@@ -689,7 +689,7 @@ function computeTFIDFeveryTerm(docs) {
         var top10Split = termFrequency.slice(0, 10);
         top10Paper.push(convertTo10Score(top10Split));
     }
-    console.log(top10Paper);
+    // console.log(top10Paper);
     return top10Paper;
 }
 
@@ -701,33 +701,25 @@ function convertTo10Score(top10key){
     return top10;
 }
 
-function computeTermFrequency(dataJSON) {
-    for (var i = 0; i< dataJSON.length; i++)
-    {
-        var cluster = [];
-        for (var j = 0; j< dataJSON.length; i++)
-        {
-            if(dataJSON[j].group == i)
-                cluster.push(dataJSON[j]);
+function getTop20KeywordsForCluster(top10){
+    
+}
 
-        }
-        var docs = getDocs(cluster);
+function computeTermFrequency(dataJSON) {
+    console.log(dataJSON);
+    var group1 = [], group2 = [], group3 = [], group4 = [], group5 = [], group6 = [];
+    var list1 = [], list2 = [], list3 = [], list4 = [], list5 = [], list6 = [];
+    var j = 0;
+    var temp = [];
+    for (var i = 0; i < dataJSON.length; i++) {
+        console.log("cluser " + i);
+        temp[0] = dataJSON[i];
+        var docs = getDocs(temp);
         var top10 = computeTFIDFeveryTerm(docs);
+        var result = getTop20KeywordsForCluster(top10);
+        console.log(top10);
     }
 
-    // $.ajax({
-    //     // traditional: true,
-    //     type: "POST",
-    //     url: "/getTopKeywords",
-    //     data: {arr: JSON.stringify(dataJSON)},
-    //     // data: {arr: JSON.stringify("{dự}")},
-    //     contentType:"application/x-www-form-urlencoded; charset=UTF-16",
-    //     dataType: "json",
-    //     success: function (data) {
-    //         alert(data);
-    //     },
-    //     error: function (errMsg) {
-    //         alert("error !!!" +  errMsg);
-    //     }
-    // });
+
+
 }
