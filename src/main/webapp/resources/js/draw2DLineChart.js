@@ -33,12 +33,12 @@ var draw2DLineChart = function(data, group){
         dataAxis: {
             visible: true,
             left: {
-                title: {text: "Term frequency in topic (%)"}
+                title: {text: "The score in the ranking system([1,30])"}
             }
         },
         legend: true,
-        start:  new Date(2017, 5, 1),
-        end: new Date(2017, 12, 31)
+        start:  new Date(2017, 8, 30),
+        end: new Date(2017, 10, 31)
     };
 
 

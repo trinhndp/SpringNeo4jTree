@@ -133,7 +133,13 @@
 }
 
 .progress-bar {
-    background-color: #898989;
+    font-size: 15px;
+    background-color: #B7A0A0;
     color: #08088A;
     padding-left: 10px;
 }
+
+#vis h3{
+    margin-top: 0px;
+}
+

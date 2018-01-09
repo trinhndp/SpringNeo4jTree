@@ -1,41 +1,47 @@
-.VNExpress-ThoiSu{
-    stroke: red;
-    fill: red;
-    stroke-width: 1px;
+.ThoiSu{
+    background-color: orangered;
+    stroke: orangered;
+    fill: orangered;
+    stroke-width: 1px solid;
     fill-opacity: 1;
 }
 
-.VNExpress-TheGioi{
+.TheGioi{
+    background-color: #8A0868;
     stroke: #8A0868;
     fill: #8A0868;
-    stroke-width: 1px;
+    stroke-width: 1px solid;
     fill-opacity: 1;
 }
 
-.VNExpress-KhoaHoc{
+.KhoaHoc{
+    background-color: blue;
     stroke: blue;
     fill: blue;
-    stroke-width: 1px;
+    stroke-width: 1px solid;
     fill-opacity: 1;
 }
 
-.VNExpress-GiaoDuc{
+.GiaoDuc{
+    background-color: #00FF00;
     stroke: #00FF00;
     fill: #00FF00;
-    stroke-width: 1px;
+    stroke-width: 1px solid;
     fill-opacity: 1;
 }
 
-.VNExpress-CongNghe{
-    stroke: purple;
-    fill: purple;
-    stroke-width: 1px;
+.CongNghe{
+    background-color: yellow;
+    stroke: yellow;
+    fill: yellow;
+    stroke-width: 1px solid;
     fill-opacity: 1;
 }
 
-.VNExpress-PhapLuat{
+.PhapLuat{
+    background-color: brown;
     stroke: brown;
     fill: brown;
-    stroke-width: 1px;
+    stroke-width: 1px solid;
     fill-opacity: 1;
 }

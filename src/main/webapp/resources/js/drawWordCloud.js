@@ -1,7 +1,7 @@
 function drawWordCloud(word_count){
     var svg_location = "#clusteringModal";
     var width = 500;
-    var height = 500;
+    var height = 400;
 
     var fill = d3.scale.category20();
 

@@ -127,7 +127,7 @@ var convertToTimelineFormat = function (key, array) {
                     group: 1,
                     content: "from " + startDate + " to " + endDate,
                     start: new Date(start[2], start[1] - 1, start[0]),
-                    end: new Date(end[2], end[1] - 1, end[0])
+                    end: new Date(end[2], end[1] - 1, end[0], 23, 59, 59, 59)
                 });
             startDate = array[i];
             endDate = startDate;
@@ -150,7 +150,7 @@ var convertToTimelineFormat = function (key, array) {
             group: 1,
             content: "from " + startDate + " to " + endDate,
             start: new Date(start[2], start[1] - 1, start[0]),
-            end: new Date(end[2], end[1] - 1, end[0])
+            end: new Date(end[2], end[1] - 1, end[0], 23, 59, 59, 59)
         });
     console.log(data);
 
@@ -183,7 +183,7 @@ var convertToTimelineFormatByGroup = function (key, array, group) {
                     group: group,
                     content: "from " + startDate + " to " + endDate,
                     start: new Date(start[2], start[1] - 1, start[0]),
-                    end: new Date(end[2], end[1] - 1, end[0])
+                    end: new Date(end[2], end[1] - 1, end[0], 23, 59, 59, 59)
                 });
             startDate = array[i].time;
             endDate = startDate;
@@ -206,7 +206,7 @@ var convertToTimelineFormatByGroup = function (key, array, group) {
             group: group,
             content: "from " + startDate + " to " + endDate,
             start: new Date(start[2], start[1] - 1, start[0]),
-            end: new Date(end[2], end[1] - 1, end[0])
+            end: new Date(end[2], end[1] - 1, end[0], 23, 59, 59, 59)
         });
     return data;
 }
@@ -342,7 +342,7 @@ function existKeyword(array, keyword){
 }
 
 //convert to vector of k-medoids
-function convert2VectorKMedoids(vectorTong, vectorPaper, id){
+function convert2VectorKMedoids(vectorTong, vectorPaper, id, topic){
     var vector = [];
     // console.log(vectorPaper);
     vectorTong.forEach(function (n) {
@@ -351,26 +351,72 @@ function convert2VectorKMedoids(vectorTong, vectorPaper, id){
         }
         else vector.push(0);
     })
-    vector.push("P_" + id);
+    if (topic == "GiaoDuc")
+        vector.push("G_" + id);
+    else if (topic == "ThoiSu")
+        vector.push("S_" + id);
+    else if (topic == "KhoaHoc")
+        vector.push("K_" + id);
+    else if (topic == "PhapLuat")
+        vector.push("P_" + id);
+    else if (topic == "TheGioi")
+        vector.push("T_" + id);
+    else if (topic == "CongNghe")
+        vector.push("C_" + id);
+
     // console.log(vector);
     return vector;
 }
 
-function convertToD3LinkDataFormat(json) {
+function getColor(topic){
+    if (topic == "G")
+       return "#FF33CC";
+    else if (topic == "S")
+        return "#0066FF";
+    else if (topic == "K")
+        return "#00EE00";
+    else if (topic == "P")
+        return "#CC0000";
+    else if (topic == "T")
+       return "#FFFF33";
+    else if (topic == "C")
+        return "#990099";
+}
+
+function getTitle(topic){
+    if (topic == "G")
+        return "GiaoDuc";
+    else if (topic == "S")
+        return "ThoiSu";
+    else if (topic == "K")
+        return "KhoaHoc";
+    else if (topic == "P")
+        return "PhapLuat";
+    else if (topic == "T")
+        return "TheGioi";
+    else if (topic == "C")
+        return "CongNghe";
+}
+
+function convertToD3LinkDataFormat(json, cluster) {
     var data = [];
     var par = JSON.parse(json);
     // console.log("D3 convert");
     // console.log(par);
-    for(var i = 1; i < 7 ; i++)
+    for(var i = 1; i <= cluster ; i++)
     {
-        if(par[i].length == 1) data.push({"source": par[i][0].substring(2, par[i][0].length), "target": par[i][0].substring(2, par[i][0].length), "value": (i-1)});
+        if(par[i].length == 1) data.push({"source": par[i][0].substring(2, par[i][0].length), "target": par[i][0].substring(2, par[i][0].length), "value": (i-1), "colorS": getColor(par[i][0].substring(0, 1)), "colorT": getColor(par[i][0].substring(0, 1)), "titleS":  getTitle(par[i][0].substring(0, 1)), "titleT":  getTitle(par[i][0].substring(0, 1))});
         else {
             for (var j = 0; j < (par[i].length - 1); j++) {
                 for (var k = j + 1; k < par[i].length; k++) {
                     data.push({
                         "source": par[i][j].substring(2, par[i][j].length),
-                        "target": par[i][k].substring(2, par[i][j].length),
-                        "value": (i - 1)
+                        "target": par[i][k].substring(2, par[i][k].length),
+                        "value": (i - 1),
+                        "colorS": getColor(par[i][j].substring(0, 1)),
+                        "colorT": getColor(par[i][k].substring(0, 1)),
+                        "titleS":  getTitle(par[i][j].substring(0, 1)),
+                        "titleT":  getTitle(par[i][k].substring(0, 1))
                     });
                 }
             }
@@ -380,15 +426,25 @@ function convertToD3LinkDataFormat(json) {
     return data;
 }
 
-//manually customize css style of bar columns
-// var customizeCssBar = function(groups){
-//     var color = ["blue", "red", "brown", "orange", "purple"];
-//     var i = 0;
-//     groups.forEach(function(n){
-//         var temp = "."+n+"";
-//         $(temp).css("fill", color[i]);
-//         $(temp).css("stroke", color[i]);
-//         $(temp).css("stroke-width", "1px");
-//         i++;
-//     });
-// }
+function resetDetailTable(){
+    $("#title-detailTable"). empty();
+    $(".topWord").empty();
+    $(".topWord").hide();
+    $(".paper-content").hide();
+    $("#title-detailTable").append('This web is a demonstration for final thesis. It has following functions:'+
+        '<br/>'+
+        '<br/>'+
+        '1. Show the lifetime of a specific keyword that belongs to a topic. <br/>'+
+    '<br/>'+
+    '2. Show an arbitrary number of top keywords in a paper. <br/>'+
+    '<br/>'+
+    '3. Show the lifetime of top keywords used the most in a topic. <br/>'+
+    '<br/>'+
+    '4. Show the rank of a keyword in each topic. <br/>'+
+    '<br/>'+
+    '5. Show the statistics of a keyword frequency through topics. <br/>'+
+    '<br/>'+
+    '6. Visualize the structure of storage tree.<br/>'+
+    '<br/>'+
+    '7. Divide all articles in a period of days into clusters. <br/>');
+}

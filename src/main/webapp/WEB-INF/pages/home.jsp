@@ -18,11 +18,12 @@
     <link rel="stylesheet" href="/resources/css/mainBody.css"/>   <!-- placed after bootstrap to override -->
     <link rel="stylesheet" href="/resources/css/footer.css"/>
     <link rel="stylesheet" href="/resources/css/barChart.css"/>
+    <link rel="stylesheet" href="/resources/css/pieChart.css"/>
 
     <link rel="stylesheet" href="/resources/css/font-awesome.min.css">
     <!-- Required scripts -->
     <script src="/resources/js/framework/jquery-3.2.1.min.js"></script>
-    <script src="/resources/js/framework/d3.v4.min.js"></script>
+    <script src="/resources/js/framework/d3.v3.min.js"></script>
     <script src="/resources/js/framework/bootstrap.min.js"></script>
     <script src="/resources/js/framework/vis.min.js"></script>
     <script src="/resources/js/validation/jquery.validation.js"></script>
@@ -36,6 +37,7 @@
     <script src="/resources/js/draw2DLineChart.js"></script>
     <script src="/resources/js/draw2DBarChart.js"></script>
     <script src="/resources/js/drawClustering.js"></script>
+    <script src="/resources/js/drawPieChart.js"></script>
     <%@ include file = "menu.jsp" %>
 </head>
 <body>

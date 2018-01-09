@@ -2,8 +2,6 @@
  * Created by Bean on 29-Jul-17.
  */
 // provide the data in the vis format
-var data = {};  //globally
-var passwd = "1234567";
 var nodes = new vis.DataSet({});
 var edges = new vis.DataSet({});
 
@@ -11,7 +9,7 @@ function initalize(){
     $("#vis").empty();
     $.ajaxSetup({
         headers: {
-            "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + passwd)
+            "Authorization": 'Basic ' + window.btoa(user + ":" + passwd)
         }
     });
     nodes = new vis.DataSet({});
@@ -19,7 +17,10 @@ function initalize(){
 }
 
 var drawGraph = function(){
+    resetDetailTable();
     initalize();
+    var data = {};
+
     $.ajax({
         type: "POST",
         url: "http://localhost:7474/db/data/transaction/commit",
@@ -33,7 +34,8 @@ var drawGraph = function(){
         dataType: "json",
         contentType: "application/json;charset=UTF-8",
         error: function (err) {
-            console.log(err)
+            console.log(err);
+            alert("Error: Please make sure that database is running...");
         },
         success: function (res) {
             var jsonRes = convertToJson(res);
@@ -78,7 +80,25 @@ var drawGraph = function(){
                             color: '#FF9900'
                         }
                     },
-                    "VNExpress-GiaoDuc": {
+                    "GiaoDuc": {
+                        shape: 'icon',
+                        icon: {
+                            face: 'FontAwesome',
+                            code: '\uf0eb',
+                            size: 25,
+                            color: "#FF33CC"
+                        }
+                    },
+                    "ThoiSu": {
+                        shape: 'icon',
+                        icon: {
+                            face: 'FontAwesome',
+                            code: '\uf0eb',
+                            size: 25,
+                            color: "#0066FF"
+                        }
+                    },
+                    "PhapLuat": {
                         shape: 'icon',
                         icon: {
                             face: 'FontAwesome',
@@ -87,40 +107,31 @@ var drawGraph = function(){
                             color: "#CC0000"
                         }
                     },
-                    "VNExpress-ThoiSu": {
+                    "TheGioi": {
                         shape: 'icon',
                         icon: {
                             face: 'FontAwesome',
                             code: '\uf0eb',
                             size: 25,
-                            color: "#6633FF"
+                            color: "#FFFF33"
                         }
                     },
-                    "VNExpress-PhapLuat": {
+                    "KhoaHoc": {
                         shape: 'icon',
                         icon: {
                             face: 'FontAwesome',
                             code: '\uf0eb',
                             size: 25,
-                            color: "#00CCFF"
+                            color: "#00EE00"
                         }
                     },
-                    "VNExpress-TheGioi": {
+                    "CongNghe": {
                         shape: 'icon',
                         icon: {
                             face: 'FontAwesome',
                             code: '\uf0eb',
                             size: 25,
-                            color: "#336666"
-                        }
-                    },
-                    "VNExpress-KhoaHoc": {
-                        shape: 'icon',
-                        icon: {
-                            face: 'FontAwesome',
-                            code: '\uf0eb',
-                            size: 25,
-                            color: "#993366"
+                            color: "#990099"
                         }
                     }
                 }
@@ -178,9 +189,9 @@ var drawGraph = function(){
                         },
                         success: function (res) {
                             console.log(res);
-                            // remove progress bars
                             $('.progress').detach();
-                            var order = 1;
+                            // var order = 1;
+                            var dataForPieChart= [];
                             res.results[0].data.forEach(function (row) {
                                 var value, probability;
                                 row.graph.nodes.forEach(function (n) {
@@ -193,11 +204,10 @@ var drawGraph = function(){
                                     probability = r.properties.weight;
                                 });
                                 console.log(value + ":" + probability);
-                                $('.topWord').append('<div class="progress"><div class="progress-bar progress-bar-striped topWord' + order + '" role="progressbar" aria-valuemin="0" aria-valuemax="100"> </div></div>');
-                                updateProgressBar(value, probability, "topWord" + order);
-                                order+=1;
-
+                                dataForPieChart.push({label: value, value: probability});
                             })
+                            $(".topWord").empty();
+                            drawPieChart(dataForPieChart);
                         }
                     });
                 }
@@ -205,12 +215,12 @@ var drawGraph = function(){
                     console.log("root or time");
                     $(".topWord").css("display", "none");
                     $(".paper-content").css("display", "none");
-                    $("#title-detailTable").html("Content Details \br This node has no details.");
+                    $("#title-detailTable").html('This node has no details.');
                 }
 
                 $.ajaxSetup({
                     headers: {
-                        "Authorization": 'Basic ' + window.btoa("neo4j" + ":" + passwd)
+                        "Authorization": 'Basic ' + window.btoa(user + ":" + passwd)
                     }
                 });
                 $.ajax({

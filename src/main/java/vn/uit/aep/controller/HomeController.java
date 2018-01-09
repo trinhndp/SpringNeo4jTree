@@ -52,15 +52,14 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/clustering", method = RequestMethod.POST)
-    public ModelAndView clustering( @RequestParam(value = "clusteringArr") String arr) {
+    public ModelAndView clustering( @RequestParam(value = "clusteringArr") String arr, @RequestParam(value = "cluster") int cluster) {
         ModelAndView model = new ModelAndView("home");
-        System.out.println("Recieved");
+        System.out.println("Recieved " + cluster + " clusters.");
 
         arr = arr.replace("[[", "["); //remove first [
         arr = arr.replace("]]", "]"); //remove last ]
         arr = arr.replace("],[", "]#["); // create the point to break
 //        System.out.println(arr);
-        System.out.println("Has step here again");
         String [] splitArr = arr.split("#");
 
          /* Load a dataset */
@@ -81,7 +80,7 @@ public class HomeController {
           Create a new instance of the KMeans algorithm, with no options
           specified. By default this will generate 4 clusters.
          */
-        Clusterer km = new KMedoids(6, 100, new EuclideanDistance());
+        Clusterer km = new KMedoids(cluster, 100, new EuclideanDistance());
         /*
           Cluster the data, it will be returned as an array of data sets, with
           each dataset representing a cluster
@@ -104,7 +103,7 @@ public class HomeController {
             }
             json += "\"" + i + "\":" + papers;
 
-            if((i+1)<7) json += ",";
+            if((i+1)< (cluster+1)) json += ",";
             else json += "}";
         }
         System.out.println(json);

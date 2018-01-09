@@ -33,11 +33,11 @@
                                 paper</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#timelineTopic">Show lifetime of a chosen
                                 topic</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#statisticsOfKeyword">Statistics of total
+                            <li><a href="#" data-toggle="modal" data-target="#statisticsOfKeyword">Show statistics of total
                                 papers using a keyword</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#barChart">Statistics of keyword frequency through topics</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#clustering">Cluster articles to see the distribution of topics</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#barChart">Show the rank of a keyword in topics</a></li>
                             <li><a href="#" onclick="drawGraph()">Visualize news graph</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#clustering">Group articles to see the distribution of topics</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -66,7 +66,7 @@
                     <div class="form-group">
                         <label>Enter number of words :</label>
                         <select id = "fLimit">
-                            <option value = "1">1</option>
+                            <option value = "1" selected="selected">1</option>
                             <option value = "2">2</option>
                             <option value = "3">3</option>
                             <option value = "4">4</option>
@@ -122,7 +122,7 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Investigate the usage of a keyword</h4>
+                <h4 class="modal-title">Investigate the rank of a keyword contributed to a topic</h4>
             </div>
             <div class="modal-body modalEdit">
                 <form id="barChartForm">
@@ -157,12 +157,13 @@
                         <input type="text" class="form-control" id="keyword" name="keyword">
                         <label for="topicDropdown" class="form-control-label">Which exact topic you want to
                             see? </label>
-                        <select id="topicDropdown" style="width: 100%;">
-                            <option>VNExpress-GiaoDuc</option>
-                            <option>VNExpress-ThoiSu</option>
-                            <option>VNExpress-KhoaHoc</option>
-                            <option>VNExpress-PhapLuat</option>
-                            <option>VNExpress-TheGioi</option>
+                        <select id="topicDropdown" style="width: 100%; height: 34px; border: 1px solid #ccc; border-radius: 4px">
+                            <option>GiaoDuc</option>
+                            <option>ThoiSu</option>
+                            <option>KhoaHoc</option>
+                            <option>PhapLuat</option>
+                            <option>TheGioi</option>
+                            <option>CongNghe</option>
                         </select>
                     </div>
                     <div class="modal-footer">
@@ -190,13 +191,21 @@
                     <div class="form-group">
                         <label for="chosenTopicDropdown" class="form-control-label">Choose a topic you wanna
                             see: </label>
-                        <select id="chosenTopicDropdown" style="width: 100%;">
-                            <option>VNExpress-GiaoDuc</option>
-                            <option>VNExpress-ThoiSu</option>
-                            <option>VNExpress-KhoaHoc</option>
-                            <option>VNExpress-PhapLuat</option>
-                            <option>VNExpress-TheGioi</option>
+                        <select id="chosenTopicDropdown" style="width: 100%;width: 100%; height: 34px; border: 1px solid #ccc; border-radius: 4px">
+                            <option>GiaoDuc</option>
+                            <option>ThoiSu</option>
+                            <option>KhoaHoc</option>
+                            <option>PhapLuat</option>
+                            <option>TheGioi</option>
+                            <option>CongNghe</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="chosenDate" class="form-control-label">Choose the first date keywords have appeared: </label>
+                        <select id="chosenDate" style="width: 100%;width: 100%; height: 34px; border: 1px solid #ccc; border-radius: 4px">
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>How many keywords you wanna see: </label>
                         <select id = "keywordLimit">
                             <option value = "1">1</option>
@@ -260,23 +269,34 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Clustering articles into 6 groups of topics </h4>
+                <h4 class="modal-title">Clustering articles into N groups of topics </h4>
             </div>
             <div class="modal-body modalEdit">
-                <form id="clusteringForm">
-                    <div class="form-group">
+                <form id="clusteringForm" role="form">
+                    <div class="form-group col-md-12" style="padding-left: 0px; padding-right: 0px;">
                         <div class = "left col-md-5">
-                        <label>From the day: </label>
+                        <label>From the date: </label>
                         <select id = "startDay">
-                            <option value = "day1"> 28/09/2017 </option>
                         </select>
                         </div>
                         <div class = "left col-md-7">
-                        <label>Select number of days to cluster: </label>
+                        <label>Select a period of days to discover: </label>
                         <select id = "endDay">
-                            <option value = "1"> 1 </option>
-                            <option value = "2"> 2 </option>
-                            <option value = "3"> 3 </option>
+                            <option value = "1"> 1 day</option>
+                            <option value = "2"> 2 days</option>
+                            <option value = "3"> 3 days</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class = "left col-md-12">
+                        <label>Enter number of words :</label>
+                        <select id = "numOfCluster">
+                            <option value = "2" selected="selected">2</option>
+                            <option value = "3">3</option>
+                            <option value = "4">4</option>
+                            <option value = "5">5</option>
+                            <option value = "6">6</option>
                         </select>
                         </div>
                     </div>
@@ -284,7 +304,7 @@
                         <button type="button" class="btn btn-default btn-close fa fa-times" data-dismiss="modal">
                             Close
                         </button>
-                        <button type="submit" class="btn btn-default btn-cluster fa fa-eye"> Show </button>
+                        <button type="submit" class="btn btn-default fa fa-eye"> Show </button>
                     </div>
                 </form>
             </div>

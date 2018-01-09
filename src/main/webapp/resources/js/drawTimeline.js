@@ -32,4 +32,9 @@ function drawTimeline(data, group){
     timeline.setOptions(options);
     if(group.length != 0) timeline.setGroups(groups);
     timeline.setItems(items);
+
+    document.getElementById('vis').onclick = function (event) {
+        var props = timeline.getEventProperties(event)
+        console.log(props);
+    }
 }
